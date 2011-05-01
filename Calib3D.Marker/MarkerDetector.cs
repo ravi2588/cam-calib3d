@@ -121,15 +121,6 @@ namespace Calib3D.Marker {
           _binary_threshold, 255,
           Emgu.CV.CvEnum.THRESH.CV_THRESH_BINARY | Emgu.CV.CvEnum.THRESH.CV_THRESH_OTSU);
 
-        Emgu.CV.CvInvoke.cvNamedWindow("x");
-        Emgu.CV.CvInvoke.cvNamedWindow("y");
-        Emgu.CV.CvInvoke.cvShowImage("x", _warped.Ptr);
-        Emgu.CV.CvInvoke.cvShowImage("y", _binary_marker.Ptr);
-        //Wait for the key pressing event
-        Emgu.CV.CvInvoke.cvWaitKey(0);
-        //Destory the window
-        Emgu.CV.CvInvoke.cvDestroyWindow("x"); 
-
         // Perform a template matching with the stored pattern in order to
         // determine if content of the envelope matches the stored pattern and
         // determine the orientation of the pattern in the image.
