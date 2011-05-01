@@ -12,12 +12,7 @@ namespace TryOutZone {
     static void Main(string[] args) {
       AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
-      Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i = new Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>("marker.png");
-
-      
-
-
-      Calib3D.Addins a = new Calib3D.Addins(Calib3D.Addins.DefaultCatalog);
+      Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i = Calib3D.IO.Images.FromPath("marker.png").First();
 
       /*
       Calib3D.Addins a = new Calib3D.Addins(Calib3D.Addins.DefaultCatalog);
