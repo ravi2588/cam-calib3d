@@ -71,6 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Addins.cs" />
+    <Compile Include="Calibration.cs" />
+    <Compile Include="CalibrationResult.cs" />
+    <Compile Include="Correspondences.cs" />
     <Compile Include="DetectionResult.cs" />
     <Compile Include="Overlays\Border.cs" />
     <Compile Include="Overlays\Numbered.cs" />
