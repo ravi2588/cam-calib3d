@@ -24,12 +24,13 @@ namespace Calib3D {
     }
 
     /// <summary>
-    /// Get/Set the reprojection error.
+    /// Get/Set the RMS reprojection error in pixels.
     /// </summary>
     /// <remarks>
-    /// The sum of squared distances between the observed 
-    /// projections (image points) and the projected model points.
+    /// The value corresponds to the square root of the sum of squared distances 
+    /// between the observed projections (image points) and the projected model points.
     /// </remarks>
+    /// <see cref="Calib3D.Calibration.GetReprojectionError"/>
     public float ReprojectionError {
       get { return _error; }
       set { _error = value; }
