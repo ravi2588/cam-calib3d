@@ -13,6 +13,7 @@ namespace Calib3D {
     private Emgu.CV.ExtrinsicCameraParameters[] _extrinsics;
     private Correspondences _correspondences;
     private float _error;
+    private Renderer.CalibrationResultRenderer _renderer;
 
     /// <summary>
     /// Construct empty calibration result.
@@ -58,6 +59,21 @@ namespace Calib3D {
     public Correspondences Correspondences {
       get { return _correspondences; }
       set { _correspondences = value; }
+    }
+
+    /// <summary>
+    /// Get/Set the default renderer associated with this result.
+    /// </summary>
+    public Renderer.CalibrationResultRenderer ResultRenderer {
+      get {
+        if (_renderer == null) {
+          _renderer = new Renderer.AxisCalibrationResultRenderer(this);
+        }
+        return _renderer;
+      }
+      set {
+        _renderer = value;
+      }
     }
   }
 }

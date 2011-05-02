@@ -81,6 +81,8 @@
     <Compile Include="PatternDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer\BorderDetectionResultRenderer.cs" />
+    <Compile Include="Renderer\CalibrationResultRenderer.cs" />
+    <Compile Include="Renderer\AxisCalibrationResultRenderer.cs" />
     <Compile Include="Renderer\DetectionResultRenderer.cs" />
     <Compile Include="Renderer\NumberDetectionResultRenderer.cs" />
     <Compile Include="SupportedPatternAttribute.cs" />
