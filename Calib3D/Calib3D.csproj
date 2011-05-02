@@ -76,6 +76,7 @@
     <Compile Include="Correspondences.cs" />
     <Compile Include="DetectionResult.cs" />
     <Compile Include="IO\Directory.cs" />
+    <Compile Include="IO\PrettyPrintExtensions.cs" />
     <Compile Include="IO\Images.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternDetector.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Renderer\DetectionResultRenderer.cs" />
     <Compile Include="Renderer\NumberDetectionResultRenderer.cs" />
     <Compile Include="SupportedPatternAttribute.cs" />
+    <Compile Include="Util\Default.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
