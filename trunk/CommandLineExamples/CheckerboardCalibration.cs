@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Test.CommandLineParsing;
 using System.ComponentModel;
 using System.IO;
+using Calib3D.IO.Extensions;
+using Calib3D.Util;
 
 namespace CommandLineExamples {
 
@@ -54,10 +56,10 @@ namespace CommandLineExamples {
         return;
       }
 
-      string image_dir = a.ImageDirectory == null ? "./" : a.ImageDirectory;
-      float size = a.PatternSquareLength.GetValueOrDefault(15);
-      System.Drawing.Size corners = a.PatternSize.GetValueOrDefault(new System.Drawing.Size(9, 6));
-      bool verbose = a.Verbose.GetValueOrDefault(false);
+      string image_dir = Default.Get(a.ImageDirectory, "./");
+      float size = Default.Get(a.PatternSquareLength, 15);
+      System.Drawing.Size corners = Default.Get(a.PatternSize, new System.Drawing.Size(9, 6));
+      bool verbose = Default.Get(a.Verbose, false);
       
       // Prepare pattern and detector
       Calib3D.CheckerBoard.CheckerBoardPattern pattern = new Calib3D.CheckerBoard.CheckerBoardPattern();
@@ -73,13 +75,15 @@ namespace CommandLineExamples {
 
       List<Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>> images = new List<Emgu.CV.Image<Emgu.CV.Structure.Bgr,byte>>();
       foreach (string path in Calib3D.IO.Directory.GetFiles(image_dir, "*.png;*.jpg")) {
-        System.Console.WriteLine(String.Format("  Processing image {0}", new FileInfo(path).Name));
+        System.Console.Write(String.Format("  Processing image {0} ", new FileInfo(path).Name));
         Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i = Calib3D.IO.Images.FromPath(path).First();
         images.Add(i);
         image_size = i.Size;
         
         Calib3D.DetectionResult dr = detect.FindPattern(i);
         c.AddView(dr);
+
+        System.Console.WriteLine(dr.Success ? "OK" : "FAILED");
 
         if (verbose) {
           dr.ResultRenderer.Render(i);
@@ -88,10 +92,14 @@ namespace CommandLineExamples {
 
       // Perform intrinsic calibration 
       Calib3D.CalibrationResult cr = Calib3D.Calibration.GetIntrinsics(c, image_size);
+      System.Console.WriteLine();
       System.Console.WriteLine(String.Format("Reprojection Error {0} pixels.", cr.ReprojectionError));
+      System.Console.WriteLine(cr.Intrinsics.PrettyPrint());
 
       if (verbose) {
         for (int i = 0; i < c.ViewCount; ++i) {
+          System.Console.WriteLine();
+          System.Console.WriteLine(cr.Extrinsics[i].PrettyPrint());
           cr.ResultRenderer.Render(images[i], i);
           Calib3D.IO.Images.Show(images[i], true);
         }
