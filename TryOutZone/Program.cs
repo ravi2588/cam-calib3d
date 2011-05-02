@@ -10,7 +10,6 @@ using System.IO;
 namespace TryOutZone {
   class Program {
     static void Main(string[] args) {
-      AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
       Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i = Calib3D.IO.Images.FromPath("marker.png").First();
 
@@ -31,8 +30,7 @@ namespace TryOutZone {
       md.Pattern = p;
 
       Calib3D.DetectionResult dr = md.FindPattern(i);
-      dr.PatternDetector.OverlayProvider.Overlay(i, dr);
-
+      dr.ResultRenderer.Render(i);
       Calib3D.IO.Images.Show(i, true);
     }
   }
