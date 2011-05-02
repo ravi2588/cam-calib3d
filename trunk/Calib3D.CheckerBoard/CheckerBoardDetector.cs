@@ -32,7 +32,7 @@ namespace Calib3D.CheckerBoard {
 
       bool found = Emgu.CV.CameraCalibration.FindChessboardCorners(
         my_img,
-        my_p.Size,
+        my_p.CornerCount,
         Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH |
         Emgu.CV.CvEnum.CALIB_CB_TYPE.FILTER_QUADS |
         Emgu.CV.CvEnum.CALIB_CB_TYPE.NORMALIZE_IMAGE,

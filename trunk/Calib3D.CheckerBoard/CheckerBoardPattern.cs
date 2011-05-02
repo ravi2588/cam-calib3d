@@ -58,7 +58,7 @@ namespace Calib3D.CheckerBoard {
     /// </summary>
     [Description("Number of inner corners per row and column")]
     [DefaultValue(typeof(System.Drawing.Size), "9, 6")]
-    public System.Drawing.Size Size {
+    public System.Drawing.Size CornerCount {
       get { return new System.Drawing.Size(_inner_corners_x, _inner_corners_y); }
       set {
         _inner_corners_x = value.Width;
