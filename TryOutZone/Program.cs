@@ -33,18 +33,7 @@ namespace TryOutZone {
       Calib3D.DetectionResult dr = md.FindPattern(i);
       dr.PatternDetector.OverlayProvider.Overlay(i, dr);
 
-      
-      CvInvoke.cvNamedWindow("x");
-      CvInvoke.cvShowImage("x", i.Ptr);
-      //Wait for the key pressing event
-      CvInvoke.cvWaitKey(0);
-      //Destory the window
-      CvInvoke.cvDestroyWindow("x"); 
-    }
-
-    static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) {
-      Assembly asm = Assembly.LoadFrom(Path.Combine("Addins", args.Name + ".dll"));
-      return asm;
+      Calib3D.IO.Images.Show(i, true);
     }
   }
 }
