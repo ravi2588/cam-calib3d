@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calib3D", "Calib3D\Calib3D.csproj", "{1D6F587E-AFF2-4CFF-B454-8F0058AE7555}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TryOutZone", "TryOutZone\TryOutZone.csproj", "{D8C63D30-5E1E-41FE-81BD-BAF66BA32673}"
@@ -8,6 +8,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calib3D.CheckerBoard", "Calib3D.CheckerBoard\Calib3D.CheckerBoard.csproj", "{3B597D69-E20F-4799-AA3E-DAB2DBFC9D09}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calib3D.Marker", "Calib3D.Marker\Calib3D.Marker.csproj", "{2B8BBAC1-6BE6-4ACB-873C-23CD6A29D3C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineExamples", "CommandLineExamples\CommandLineExamples.csproj", "{71DFB72F-D617-49BA-B93F-16598E9B42E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,16 @@ Global
 		{2B8BBAC1-6BE6-4ACB-873C-23CD6A29D3C8}.Release|Mixed Platforms.Build.0 = Release|x86
 		{2B8BBAC1-6BE6-4ACB-873C-23CD6A29D3C8}.Release|x86.ActiveCfg = Release|x86
 		{2B8BBAC1-6BE6-4ACB-873C-23CD6A29D3C8}.Release|x86.Build.0 = Release|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Debug|x86.ActiveCfg = Debug|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Debug|x86.Build.0 = Debug|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Release|Any CPU.ActiveCfg = Release|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Release|Mixed Platforms.Build.0 = Release|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Release|x86.ActiveCfg = Release|x86
+		{71DFB72F-D617-49BA-B93F-16598E9B42E8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
