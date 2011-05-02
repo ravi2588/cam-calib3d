@@ -7,7 +7,7 @@ using System.IO;
 namespace Calib3D.IO {
 
   /// <summary>
-  /// Simplifies loading of images from files.
+  /// Simplifies I/O of images.
   /// </summary>
   public class Images {
 
@@ -38,6 +38,32 @@ namespace Calib3D.IO {
       } else if (File.Exists(path)) {
         // Load single image
         yield return new Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>(path);
+      }
+    }
+
+    /// <summary>
+    /// Opens a new window showing the given image.
+    /// </summary>
+    /// <param name="i">Image to show</param>
+    /// <param name="wait_for_close">If set waits for the window to be closed by the user</param>
+    public static void Show(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, bool wait_for_close)
+    {
+      Show(i, wait_for_close, "image");
+    }
+
+    /// <summary>
+    /// Opens a new window showing the given image.
+    /// </summary>
+    /// <param name="i">Image to show</param>
+    /// <param name="wait_for_close">If set waits for the window to be closed by the user</param>
+    /// <param name="window_name">Window title</param>
+    public static void Show(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, bool wait_for_close, string window_name)
+    {
+      Emgu.CV.CvInvoke.cvNamedWindow(window_name);
+      Emgu.CV.CvInvoke.cvShowImage(window_name, i.Ptr);
+      if (wait_for_close) {
+        Emgu.CV.CvInvoke.cvWaitKey(0);
+        Emgu.CV.CvInvoke.cvDestroyWindow("x");
       }
     }
 
