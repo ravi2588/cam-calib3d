@@ -30,9 +30,9 @@ namespace Calib3D.IO {
     /// <returns>Loaded images.</returns>
     public static IEnumerable<Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>> FromPath(string path, string pattern) {
 
-      if (Directory.Exists(path)) {
+      if (System.IO.Directory.Exists(path)) {
         // Load all images from path
-        foreach (string file in GetFiles(path, pattern)) {
+        foreach (string file in IO.Directory.GetFiles(path, pattern)) {
           yield return new Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>(file);
         }
       } else if (File.Exists(path)) {
@@ -65,22 +65,6 @@ namespace Calib3D.IO {
         Emgu.CV.CvInvoke.cvWaitKey(0);
         Emgu.CV.CvInvoke.cvDestroyWindow("x");
       }
-    }
-
-    /// <summary>
-    /// Get all files in directory matching certain extensions.
-    /// </summary>
-    /// <param name="path">Path to directory</param>
-    /// <param name="searchPattern">Pattern supporting multiple extensions separated by ';'</param>
-    /// <returns></returns>
-    protected static string[] GetFiles(string path, string pattern) {
-      string[] exts = pattern.Split(';');
-
-      List<string> files = new List<string>();
-      foreach (string filter in exts) {
-        files.AddRange(System.IO.Directory.GetFiles(path, filter));
-      }
-      return files.ToArray();
     }
 
   }

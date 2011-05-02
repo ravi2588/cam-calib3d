@@ -49,13 +49,6 @@ namespace Calib3D {
     public abstract DetectionResult FindPattern(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i);
 
     /// <summary>
-    /// Get the default overlay provider to render the DetectionResult.
-    /// </summary>
-    public virtual DetectionResult.IOverlayProvider OverlayProvider {
-      get { return new Overlays.Numbered(); }
-    }
-
-    /// <summary>
     /// Test if pattern detector type supports a specific pattern.
     /// </summary>
     /// <param name="pattern_detector">Type of pattern detector.</param>

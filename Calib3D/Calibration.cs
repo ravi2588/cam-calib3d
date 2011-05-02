@@ -30,14 +30,14 @@ namespace Calib3D {
 
       Emgu.CV.ExtrinsicCameraParameters[] ext;
 
-      Emgu.CV.CameraCalibration.CalibrateCamera(
+      double err = Emgu.CV.CameraCalibration.CalibrateCamera(
         c.ModelPoints, c.ImagePoints, image_size,
         cr.Intrinsics,
         Emgu.CV.CvEnum.CALIB_TYPE.DEFAULT,
         out ext);
 
-      cr.ReprojectionError = GetReprojectionError(cr);
       cr.Extrinsics = ext;
+      cr.ReprojectionError = GetReprojectionError(cr);
 
       return cr;
     }
@@ -81,6 +81,9 @@ namespace Calib3D {
     /// and its associated image point is calculated. All squared distances are 
     /// accumulated and divided by the total number of correspondeces. The square
     /// root of this value is returned.
+    /// 
+    /// Matches current OpenCV implementation. We roll out our own implementation, since
+    /// OpenCV supports the reprojection error only for intrinsic camera calibration.
     /// </remarks>
     /// <param name="cr">Calibration result having correspondences, intrinsics and extrinsics</param>
     /// <returns>The RMS projection error in pixels</returns>

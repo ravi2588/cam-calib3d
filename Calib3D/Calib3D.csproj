@@ -75,12 +75,14 @@
     <Compile Include="CalibrationResult.cs" />
     <Compile Include="Correspondences.cs" />
     <Compile Include="DetectionResult.cs" />
+    <Compile Include="IO\Directory.cs" />
     <Compile Include="IO\Images.cs" />
-    <Compile Include="Overlays\Border.cs" />
-    <Compile Include="Overlays\Numbered.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderer\BorderDetectionResultRenderer.cs" />
+    <Compile Include="Renderer\DetectionResultRenderer.cs" />
+    <Compile Include="Renderer\NumberDetectionResultRenderer.cs" />
     <Compile Include="SupportedPatternAttribute.cs" />
   </ItemGroup>
   <ItemGroup />

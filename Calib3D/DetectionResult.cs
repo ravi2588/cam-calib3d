@@ -19,6 +19,7 @@ namespace Calib3D {
     private PatternDetector _detector;
     private Pattern _pattern;
     private List<System.Drawing.PointF> _image_points;
+    private Renderer.DetectionResultRenderer _renderer;
 
     /// <summary>
     /// Create detection result initialized to success.
@@ -84,22 +85,25 @@ namespace Calib3D {
     }
 
     /// <summary>
+    /// Get/Set the default renderer associated with this result.
+    /// </summary>
+    public Renderer.DetectionResultRenderer ResultRenderer {
+      get {
+        if (_renderer == null) {
+          _renderer = new Renderer.NumberDetectionResultRenderer(this);
+        }
+        return _renderer;
+      }
+      set {
+        _renderer = value;
+      }
+    }
+
+    /// <summary>
     /// Get the list of corresponding points detected in the image.
     /// </summary>
     public IList<System.Drawing.PointF> ImagePoints {
       get { return _image_points; }
-    }
-
-    /// <summary>
-    /// Provide visual DetectionResult feedback.
-    /// </summary>
-    public interface IOverlayProvider {
-      /// <summary>
-      /// Visually overlay an image with the detection result.
-      /// </summary>
-      /// <param name="i">Image to overlay</param>
-      /// <param name="dr">Detection result</param>
-      void Overlay(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, DetectionResult dr);
     }
   }
 }
