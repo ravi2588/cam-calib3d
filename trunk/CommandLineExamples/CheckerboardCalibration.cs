@@ -4,16 +4,21 @@ using System.Linq;
 using System.Text;
 using Microsoft.Test.CommandLineParsing;
 using System.ComponentModel;
+using System.IO;
 
 namespace CommandLineExamples {
 
   /// <summary>
   /// Simple Chessboard calibration
   /// </summary>
+  /// <example>
+  /// CommandLineExamples.exe run CheckerboardCalibration /ImageDirectory=../etc/images/checkerboard ^ 
+  ///                             /PatternSize=9,6 /PatternSquareLength=25 /Verbose
+  /// </example>
   public class CheckerboardCalibration : IExample {
 
     /// <summary>
-    /// Parsed arguments
+    /// Supported commandline arguments.
     /// </summary>
     class CommandLineArguments {
 
@@ -25,6 +30,9 @@ namespace CommandLineExamples {
 
       [Description("Size of a single square in units of your choice")]
       public float? PatternSquareLength { get; set; }
+
+      [Description("Provide verbose output information")]
+      public bool? Verbose { get; set; }
 
       [Description("Number of inner corners per row and column")]
       public System.Drawing.Size? PatternSize { get; set; }
@@ -49,6 +57,7 @@ namespace CommandLineExamples {
       string image_dir = a.ImageDirectory == null ? "./" : a.ImageDirectory;
       float size = a.PatternSquareLength.GetValueOrDefault(15);
       System.Drawing.Size corners = a.PatternSize.GetValueOrDefault(new System.Drawing.Size(9, 6));
+      bool verbose = a.Verbose.GetValueOrDefault(false);
       
       // Prepare pattern and detector
       Calib3D.CheckerBoard.CheckerBoardPattern pattern = new Calib3D.CheckerBoard.CheckerBoardPattern();
@@ -61,15 +70,24 @@ namespace CommandLineExamples {
       // Load all images and collect model/image correspondences.
       System.Drawing.Size image_size = System.Drawing.Size.Empty;
       Calib3D.Correspondences c = new Calib3D.Correspondences();
-      foreach (Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i in Calib3D.IO.Images.FromPath(image_dir)) {
+
+      foreach (string path in Calib3D.IO.Directory.GetFiles(image_dir, "*.png;*.jpg")) {
+        System.Console.WriteLine(String.Format("  Processing image {0}", new FileInfo(path).Name));
+        Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i = Calib3D.IO.Images.FromPath(path).First();
         image_size = i.Size;
+        
         Calib3D.DetectionResult dr = detect.FindPattern(i);
         c.AddView(dr);
+
+        if (verbose) {
+          dr.ResultRenderer.Render(i);
+          Calib3D.IO.Images.Show(i, true);
+        }
       }
 
       // Perform intrinsic calibration 
       Calib3D.CalibrationResult cr = Calib3D.Calibration.GetIntrinsics(c, image_size);
-      System.Console.WriteLine(String.Format("Reprojection Error {0}", cr.ReprojectionError));
+      System.Console.WriteLine(String.Format("Reprojection Error {0} pixels.", cr.ReprojectionError));
 
     }
   }
