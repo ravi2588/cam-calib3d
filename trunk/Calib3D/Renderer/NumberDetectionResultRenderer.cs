@@ -9,24 +9,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Calib3D.Overlays {
+namespace Calib3D.Renderer {
 
   /// <summary>
-  /// Simple numbered circle overlay.
+  /// Renders red/green circles and numbers for each image point.
   /// </summary>
-  public class Numbered : DetectionResult.IOverlayProvider {
+  public class NumberDetectionResultRenderer : DetectionResultRenderer {
 
-    public void Overlay(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, DetectionResult dr) {
-      if (dr.ImagePoints.Count == 0) {
+    /// <summary>
+    /// Construct from detection result.
+    /// </summary>
+    /// <param name="dr"></param>
+    public NumberDetectionResultRenderer(DetectionResult dr)
+      : base(dr) { }
+
+    /// <summary>
+    /// Render result to image.
+    /// </summary>
+    /// <param name="i">Image to overlay with result</param>
+    public override void Render(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i) {
+      if (this.DetectionResult.ImagePoints.Count == 0) {
         return;
       }
 
-      System.Drawing.Color color = dr.Success ? System.Drawing.Color.Green : System.Drawing.Color.Red;
+      System.Drawing.Color color = this.DetectionResult.Success ? System.Drawing.Color.Green : System.Drawing.Color.Red;
       Emgu.CV.Structure.Bgr bgr = new Emgu.CV.Structure.Bgr(color);
       Emgu.CV.Structure.MCvFont f = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_PLAIN, 0.8, 0.8);
 
       int count = 1;
-      foreach (System.Drawing.PointF point in dr.ImagePoints) {
+      foreach (System.Drawing.PointF point in this.DetectionResult.ImagePoints) {
         i.Draw(new Emgu.CV.Structure.CircleF(point, 4), bgr, 2);
 
         System.Drawing.Point ip = new System.Drawing.Point(
@@ -37,6 +48,5 @@ namespace Calib3D.Overlays {
         count++;
       }
     }
-
   }
 }
