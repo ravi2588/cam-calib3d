@@ -31,7 +31,7 @@ namespace TryOutZone {
 
       Calib3D.DetectionResult dr = md.FindPattern(i);
       dr.ResultRenderer.Render(i);
-      Calib3D.IO.Images.Show(i, true);
+      Calib3D.IO.Images.Show(i, 0);
     }
   }
 }

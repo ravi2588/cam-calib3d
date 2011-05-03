@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Calib3D http://code.google.com/p/cam-calib3d/
+ * Copyright (c) 2011, Christoph Heindl. All rights reserved.
+ * Code license:	New BSD License
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
