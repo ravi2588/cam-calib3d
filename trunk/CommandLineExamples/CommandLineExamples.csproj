@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="CheckerboardCalibration.cs" />
     <Compile Include="CameraSnapshot.cs" />
+    <Compile Include="Default.cs" />
     <Compile Include="LiveMarkerTracking.cs" />
     <Compile Include="LiveMarkerDetection.cs" />
     <Compile Include="Program.cs" />

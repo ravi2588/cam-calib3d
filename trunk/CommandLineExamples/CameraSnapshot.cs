@@ -11,7 +11,6 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using Microsoft.Test.CommandLineParsing;
-using Calib3D.Util;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Threading;
@@ -22,7 +21,7 @@ namespace CommandLineExamples {
   /// Take snapshots from capture device.
   /// </summary>
   /// <example>
-  /// CommandLineExamples.exe run CameraSnapshot /OutputDirectory=. /HardwareId=0
+  /// CommandLineExamples.exe run CameraSnapshot /OutputDirectory=. /HardwareId=0 /FrameSize=1024,768
   /// </example>
   public class CameraSnapshot : IExample {
 
@@ -36,6 +35,9 @@ namespace CommandLineExamples {
 
       [Description("Path to store snapshots to")]
       public string OutputDirectory { get; set; }
+
+      [Description("Desired image size")]
+      public System.Drawing.Size? FrameSize { get; set; }
 
       [Description("Device ID of camera")]
       public int? HardwareId { get; set; }
@@ -54,6 +56,10 @@ namespace CommandLineExamples {
         return;
       }
 
+      System.Console.WriteLine("In the commandline window");
+      System.Console.WriteLine("  Press ESCAPE to quit example");
+      System.Console.WriteLine("  Press any other key to take a snapshot");
+
       string output_path = Default.Get(a.OutputDirectory, ".");
       int device_id = Default.Get(a.HardwareId, 0);
 
@@ -63,6 +69,10 @@ namespace CommandLineExamples {
 
       // Start capturing from camera.
       Capture capture = new Capture(device_id);
+      if (a.FrameSize.HasValue) {
+        capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, a.FrameSize.Value.Width);
+        capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, a.FrameSize.Value.Height);
+      }
 
       bool stop = false;
       while (!stop) {
