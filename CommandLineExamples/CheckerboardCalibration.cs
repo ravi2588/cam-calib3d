@@ -37,6 +37,9 @@ namespace CommandLineExamples {
       [Description("Directory containing the calibration images")]
       public string ImageDirectory { get; set; }
 
+      [Description("File to store calibration result to")]
+      public string CalibrationResultOutput { get; set; }
+
       [Description("Size of a single square in units of your choice")]
       public float? PatternSquareLength { get; set; }
 
@@ -64,7 +67,8 @@ namespace CommandLineExamples {
       }
 
       string image_dir = Default.Get(a.ImageDirectory, "./");
-      float size = Default.Get(a.PatternSquareLength, 15);
+      string output_path = Default.Get(a.CalibrationResultOutput, "result.cr");
+      float size = Default.Get(a.PatternSquareLength, 25);
       System.Drawing.Size corners = Default.Get(a.PatternSize, new System.Drawing.Size(9, 6));
       bool verbose = Default.Get(a.Verbose, false);
       
@@ -99,9 +103,15 @@ namespace CommandLineExamples {
 
       // Perform intrinsic calibration 
       Calib3D.CalibrationResult cr = Calib3D.Calibration.GetIntrinsics(c, image_size);
+
+      // Pretty print results to console
       System.Console.WriteLine();
       System.Console.WriteLine(String.Format("Reprojection Error {0} pixels.", cr.ReprojectionError));
       System.Console.WriteLine(cr.Intrinsics.PrettyPrint());
+
+      // Export as binary archieve
+      Calib3D.IO.Exporter export = new Calib3D.IO.Exporter();
+      export.ToFile(output_path, new Calib3D.IO.BinaryCalibrationResultExportFormatter(), cr);
 
       if (verbose) {
         for (int i = 0; i < c.ViewCount; ++i) {
