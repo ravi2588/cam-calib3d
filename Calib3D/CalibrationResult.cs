@@ -15,11 +15,16 @@ namespace Calib3D {
   /// <summary>
   /// Holds the calibration result.
   /// </summary>
+  /// <remarks>Supports serialization of intrinsic, extrinsic and error. 
+  /// Correspondences and renders are not serialized.</remarks>
+  [Serializable]
   public class CalibrationResult {
     private Emgu.CV.IntrinsicCameraParameters _intrinsics;
     private Emgu.CV.ExtrinsicCameraParameters[] _extrinsics;
-    private Correspondences _correspondences;
     private float _error;
+    [NonSerialized] 
+    private Correspondences _correspondences;
+    [NonSerialized] 
     private Renderer.CalibrationResultRenderer _renderer;
 
     /// <summary>

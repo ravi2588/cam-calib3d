@@ -106,5 +106,15 @@ namespace Calib3D {
     public IList<System.Drawing.PointF> ImagePoints {
       get { return _image_points; }
     }
+
+    /// <summary>
+    /// Get correspondences for this detection result.
+    /// </summary>
+    /// <returns>Image/model correspondences.</returns>
+    public Correspondences GetCorrespondences() {
+      Correspondences c = new Correspondences();
+      c.AddView(this);
+      return c;
+    }
   }
 }

@@ -58,6 +58,18 @@ namespace Calib3D {
     public IEnumerable<Calib3D.PatternDetector> Detectors { get; set; }
 
     /// <summary>
+    /// Get list of available calibration result exporter formatters.
+    /// </summary>
+    [ImportMany(typeof(Calib3D.IO.ICalibrationResultExportFormatter))]
+    public IEnumerable<Calib3D.IO.ICalibrationResultExportFormatter> CalibrationResultExporterFormatters { get; set; }
+
+    /// <summary>
+    /// Get list of available calibration result import formatters.
+    /// </summary>
+    [ImportMany(typeof(Calib3D.IO.ICalibrationResultImportFormatter))]
+    public IEnumerable<Calib3D.IO.ICalibrationResultImportFormatter> CalibrationResultImportFormatters { get; set; }
+
+    /// <summary>
     /// Find object by reflecting its full name.
     /// </summary>
     /// <typeparam name="T"></typeparam>
