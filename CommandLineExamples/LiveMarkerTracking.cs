@@ -11,7 +11,6 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using Microsoft.Test.CommandLineParsing;
-using Calib3D.Util;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Threading;
@@ -39,10 +38,13 @@ namespace CommandLineExamples {
       public string MarkerImage { get; set; }
 
       [Description("Path to camera calibration")]
-      public string CameraCalibration { get; set; }
+      public string CameraCalibration { get; set;}
 
       [Description("Size of marker")]
       public float? MarkerLength { get; set; }
+
+      [Description("Desired image size")]
+      public System.Drawing.Size? FrameSize { get; set; }
 
       [Description("Device ID of camera")]
       public int? HardwareId { get; set; }
@@ -76,25 +78,20 @@ namespace CommandLineExamples {
       det.MaximumErrorNormed = 0.4f;
       det.Pattern = pat;
 
-      /*
-      Calib3D.CheckerBoard.CheckerBoardPattern pat = new Calib3D.CheckerBoard.CheckerBoardPattern();
-      pat.CornerCount = new System.Drawing.Size(9,6);
-      pat.SquareLength = 25;
-
-      Calib3D.CheckerBoard.CheckerBoardDetector det = new Calib3D.CheckerBoard.CheckerBoardDetector();
-      det.Pattern = pat;
-       */
-
       // Load camera calibration
       Calib3D.IO.Importer import = new Calib3D.IO.Importer();
       Calib3D.CalibrationResult capture_calib = import.FromFile(camera_calib_path, new Calib3D.IO.BinaryCalibrationResultImportFormatter());
       Console.WriteLine(capture_calib.Intrinsics.PrettyPrint());
 
       // Show marker to be tracked
-      //Calib3D.IO.Images.Show(pat.MarkerImage, 1, "Marker");
+      Calib3D.IO.Images.Show(pat.MarkerImage, 1, "Marker");
 
       // Start capturing from camera.
       Capture capture = new Capture(device_id);
+      if (a.FrameSize.HasValue) {
+        capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, a.FrameSize.Value.Width);
+        capture.SetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, a.FrameSize.Value.Height);
+      }
 
       while (!Console.KeyAvailable) {
         Emgu.CV.Image<Bgr, byte> i = capture.QueryFrame().Clone();

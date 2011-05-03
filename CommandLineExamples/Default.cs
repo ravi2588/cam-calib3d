@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Calib3D.Util {
+namespace CommandLineExamples {
 
   /// <summary>
   /// Provides a unique interface to default values for refernce and value types.

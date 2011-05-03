@@ -13,7 +13,6 @@ using Microsoft.Test.CommandLineParsing;
 using System.ComponentModel;
 using System.IO;
 using Calib3D.IO.Extensions;
-using Calib3D.Util;
 
 namespace CommandLineExamples {
 
@@ -91,6 +90,7 @@ namespace CommandLineExamples {
         images.Add(i);
         image_size = i.Size;
         
+        // Detect pattern in image
         Calib3D.DetectionResult dr = detect.FindPattern(i);
         c.AddView(dr);
 
