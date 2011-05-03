@@ -1,8 +1,9 @@
-﻿/*
- * Calib3D http://code.google.com/p/cam-calib3d/
- * Copyright (c) 2011, Christoph Heindl. All rights reserved.
- * Code license:	New BSD License
- */
+﻿///
+/// <project>Calib3D http://code.google.com/p/cam-calib3d/ </project>
+/// <author>Christoph Heindl</author>
+/// <copyright>Copyright (c) 2011, Christoph Heindl</copyright>
+/// <license>New BSD License</license>
+///
 
 using System;
 using System.ComponentModel.Composition.Primitives;
