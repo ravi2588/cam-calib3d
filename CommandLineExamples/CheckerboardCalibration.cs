@@ -101,7 +101,7 @@ namespace CommandLineExamples {
           System.Console.WriteLine();
           System.Console.WriteLine(cr.Extrinsics[i].PrettyPrint());
           cr.ResultRenderer.Render(images[i], i);
-          Calib3D.IO.Images.Show(images[i], true);
+          Calib3D.IO.Images.Show(images[i], 0);
         }
       }
 
