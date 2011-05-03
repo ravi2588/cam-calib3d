@@ -39,7 +39,7 @@ namespace Calib3D.CheckerBoard {
     /// Default construct.
     /// </summary>
     public CheckerBoardPattern()
-      : this(9, 6, 15.0f) { }
+      : this(9, 6, 25.0f) { }
 
     /// <summary>
     /// Construct from parameters.
