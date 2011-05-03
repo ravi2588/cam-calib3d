@@ -82,8 +82,8 @@ namespace Calib3D.Marker {
       // 2   3
       this.ModelPoints.Add(new Emgu.CV.Structure.MCvPoint3D32f(0, 0, 0));
       this.ModelPoints.Add(new Emgu.CV.Structure.MCvPoint3D32f(_marker_length, 0, 0));
-      this.ModelPoints.Add(new Emgu.CV.Structure.MCvPoint3D32f(_marker_length, _marker_length, 0));
       this.ModelPoints.Add(new Emgu.CV.Structure.MCvPoint3D32f(0, _marker_length, 0));
+      this.ModelPoints.Add(new Emgu.CV.Structure.MCvPoint3D32f(_marker_length, _marker_length, 0));
     }
   }
 }
