@@ -45,26 +45,23 @@ namespace Calib3D.IO {
     /// Opens a new window showing the given image.
     /// </summary>
     /// <param name="i">Image to show</param>
-    /// <param name="wait_for_close">If set waits for the window to be closed by the user</param>
-    public static void Show(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, bool wait_for_close)
+    /// <param name="wait_time_ms">Wait time in milliseconds. Use zero or negativ delay to wait forever.</param>
+    public static void Show(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, int wait_time_ms)
     {
-      Show(i, wait_for_close, "image");
+      Show(i, wait_time_ms, "image");
     }
 
     /// <summary>
     /// Opens a new window showing the given image.
     /// </summary>
     /// <param name="i">Image to show</param>
-    /// <param name="wait_for_close">If set waits for the window to be closed by the user</param>
+    /// <param name="wait_time_ms">Wait time in milliseconds. Use zero or negativ delay to wait forever.</param>
     /// <param name="window_name">Window title</param>
-    public static void Show(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, bool wait_for_close, string window_name)
+    public static void Show(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, int wait_time_ms, string window_name)
     {
       Emgu.CV.CvInvoke.cvNamedWindow(window_name);
       Emgu.CV.CvInvoke.cvShowImage(window_name, i.Ptr);
-      if (wait_for_close) {
-        Emgu.CV.CvInvoke.cvWaitKey(0);
-        Emgu.CV.CvInvoke.cvDestroyWindow("x");
-      }
+      Emgu.CV.CvInvoke.cvWaitKey(wait_time_ms);
     }
 
   }
