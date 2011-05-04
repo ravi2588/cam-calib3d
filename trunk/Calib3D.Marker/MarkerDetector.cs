@@ -71,6 +71,8 @@ namespace Calib3D.Marker {
       if (this.Pattern == null)
         throw new ArgumentNullException("No pattern specified");
 
+      MarkerPattern my_pattern = this.Pattern as MarkerPattern;
+
       DetectionResult dr = new DetectionResult(this, this.Pattern);
       dr.Success = false;
 
@@ -146,15 +148,18 @@ namespace Calib3D.Marker {
           // 1   2    2   3
 
           dr.Success = true;
-          dr.ImagePoints.Clear();
-          dr.ImagePoints.Add(c[id_0]);
-          dr.ImagePoints.Add(c[id_3]);
-          dr.ImagePoints.Add(c[id_1]);
-          dr.ImagePoints.Add(c[id_2]);
+          dr.ViewCorrespondences.ImagePoints.Clear();
+          dr.ViewCorrespondences.ImagePoints.Add(c[id_0]);
+          dr.ViewCorrespondences.ImagePoints.Add(c[id_3]);
+          dr.ViewCorrespondences.ImagePoints.Add(c[id_1]);
+          dr.ViewCorrespondences.ImagePoints.Add(c[id_2]);
         }
 
         contour_points = contour_points.HNext;
       } // End of contours
+
+      // Complete with model correspondences.
+      dr.ViewCorrespondences.ModelPoints.AddRange(my_pattern.ModelPoints);
 
       return dr;
     }

@@ -29,7 +29,7 @@ namespace Calib3D.Renderer {
     /// </summary>
     /// <param name="i">Image to overlay with result</param>
     public override void Render(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i) {
-      if (this.DetectionResult.ImagePoints.Count == 0) {
+      if (this.DetectionResult.ViewCorrespondences.Count == 0) {
         return;
       }
 
@@ -38,7 +38,7 @@ namespace Calib3D.Renderer {
       Emgu.CV.Structure.MCvFont f = new Emgu.CV.Structure.MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_PLAIN, 0.8, 0.8);
 
       int count = 1;
-      foreach (System.Drawing.PointF point in this.DetectionResult.ImagePoints) {
+      foreach (System.Drawing.PointF point in this.DetectionResult.ViewCorrespondences.ImagePoints) {
         i.Draw(new Emgu.CV.Structure.CircleF(point, 4), bgr, 2);
 
         System.Drawing.Point ip = new System.Drawing.Point(
