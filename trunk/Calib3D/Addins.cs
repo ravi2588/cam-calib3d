@@ -60,14 +60,14 @@ namespace Calib3D {
     /// <summary>
     /// Get list of available calibration result exporter formatters.
     /// </summary>
-    [ImportMany(typeof(Calib3D.IO.ICalibrationResultExportFormatter))]
-    public IEnumerable<Calib3D.IO.ICalibrationResultExportFormatter> CalibrationResultExporterFormatters { get; set; }
+    [ImportMany(typeof(Calib3D.IO.ICalibrationResultExporter))]
+    public IEnumerable<Calib3D.IO.ICalibrationResultExporter> CalibrationResultExporters { get; set; }
 
     /// <summary>
     /// Get list of available calibration result import formatters.
     /// </summary>
-    [ImportMany(typeof(Calib3D.IO.ICalibrationResultImportFormatter))]
-    public IEnumerable<Calib3D.IO.ICalibrationResultImportFormatter> CalibrationResultImportFormatters { get; set; }
+    [ImportMany(typeof(Calib3D.IO.ICalibrationResultImporter))]
+    public IEnumerable<Calib3D.IO.ICalibrationResultImporter> CalibrationResultImporters { get; set; }
 
     /// <summary>
     /// Find object by reflecting its full name.

@@ -110,8 +110,9 @@ namespace CommandLineExamples {
       System.Console.WriteLine(cr.Intrinsics.PrettyPrint());
 
       // Export as binary archieve
-      Calib3D.IO.Exporter export = new Calib3D.IO.Exporter();
-      export.ToFile(output_path, cr);
+      Calib3D.IO.BinaryFileSerializer export = new Calib3D.IO.BinaryFileSerializer();
+      export.FileName = output_path;
+      export.Export(cr);
 
       if (verbose) {
         for (int i = 0; i < c.ViewCount; ++i) {

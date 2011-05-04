@@ -2,28 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
 using Calib3D.IO.Extensions;
 
 namespace Calib3D.IO {
 
   /// <summary>
-  /// Export calibration result as plain text.
+  /// Serialize calibration result to file using plain text formatting.
   /// </summary>
-  public class TextCalibrationResultFormatter : ICalibrationResultExportFormatter {
-    
+  public class TextFileExporter : ICalibrationResultExporter {
+
     /// <summary>
-    /// Construct with default values.
+    /// Construct a new instance of the TextFileExporter class.
     /// </summary>
-    public TextCalibrationResultFormatter() {
-      this.WriteIntrinsics = true;
-      this.WriteExtrinsics = true;
+    public TextFileExporter() {
+      FileName = "calibration_result.txt";
     }
+
+    /// <summary>
+    /// Get/Set the filename to serialize to/from.
+    /// </summary>
+    public string FileName { get; set; }
 
     /// <summary>
     /// Get/Set a boolean value indicating whether to print intrinsic info or not.
     /// </summary>
-    public bool WriteIntrinsics { get; set;}
+    public bool WriteIntrinsics { get; set; }
 
     /// <summary>
     /// Get/Set a boolean value indicating whether to print extrinsic info or not.
@@ -31,14 +34,17 @@ namespace Calib3D.IO {
     public bool WriteExtrinsics { get; set; }
 
     /// <summary>
-    /// Serialize calibration result to output
+    /// Export calibration result.
     /// </summary>
-    /// <param name="s">Stream</param>
     /// <param name="cr">Calibration result</param>
-    public void Serialize(System.IO.Stream s, CalibrationResult cr) {
-      using (TextWriter tw = new StreamWriter(s)) {
+    public void Export(CalibrationResult cr) {
+      using (System.IO.Stream s = System.IO.File.OpenWrite(this.FileName))
+      using (System.IO.TextWriter tw = new System.IO.StreamWriter(s))
+      {
         tw.WriteLine(cr.PrettyPrint(this.WriteIntrinsics, this.WriteExtrinsics));
+        s.Close();
       }
     }
+
   }
 }
