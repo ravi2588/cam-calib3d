@@ -79,8 +79,9 @@ namespace CommandLineExamples {
       det.Pattern = pat;
 
       // Load camera calibration
-      Calib3D.IO.Importer import = new Calib3D.IO.Importer();
-      Calib3D.CalibrationResult capture_calib = import.FromFile(camera_calib_path);
+      Calib3D.IO.BinaryFileSerializer import = new Calib3D.IO.BinaryFileSerializer();
+      import.FileName = camera_calib_path;
+      Calib3D.CalibrationResult capture_calib = import.Import();
       Console.WriteLine(capture_calib.Intrinsics.PrettyPrint());
 
       // Show marker to be tracked

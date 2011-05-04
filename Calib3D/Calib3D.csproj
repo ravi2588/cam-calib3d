@@ -74,13 +74,13 @@
     <Compile Include="Calibration.cs" />
     <Compile Include="CalibrationResult.cs" />
     <Compile Include="DetectionResult.cs" />
-    <Compile Include="IO\BinaryCalibrationResultFormatter.cs" />
+    <Compile Include="IO\BinaryFileSerializer.cs" />
     <Compile Include="IO\Directory.cs" />
-    <Compile Include="IO\Exporter.cs" />
-    <Compile Include="IO\Importer.cs" />
-    <Compile Include="IO\TextCalibrationResultFormatter.cs" />
+    <Compile Include="IO\ICalibrationResultExporter.cs" />
+    <Compile Include="IO\ICalibrationResultImporter.cs" />
     <Compile Include="IO\PrettyPrintExtensions.cs" />
     <Compile Include="IO\Images.cs" />
+    <Compile Include="IO\TextFileExporter.cs" />
     <Compile Include="MultiViewCorrespondences.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternDetector.cs" />
