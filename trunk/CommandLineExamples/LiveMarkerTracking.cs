@@ -80,7 +80,7 @@ namespace CommandLineExamples {
 
       // Load camera calibration
       Calib3D.IO.Importer import = new Calib3D.IO.Importer();
-      Calib3D.CalibrationResult capture_calib = import.FromFile(camera_calib_path, new Calib3D.IO.BinaryCalibrationResultImportFormatter());
+      Calib3D.CalibrationResult capture_calib = import.FromFile(camera_calib_path);
       Console.WriteLine(capture_calib.Intrinsics.PrettyPrint());
 
       // Show marker to be tracked

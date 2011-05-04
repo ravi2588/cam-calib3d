@@ -71,9 +71,19 @@ namespace Calib3D.IO {
     }
 
     /// <summary>
+    /// Import from file using default formatter
+    /// </summary>
+    /// <param name="path">Path to import from</param>
+    /// <returns>Calibration result</returns>
+    public CalibrationResult FromFile(string path) {
+      return FromFile(path, new BinaryCalibrationResultImportFormatter());
+    }
+
+    /// <summary>
     /// Import from file using specific formatter
     /// </summary>
     /// <param name="path">Path to import from</param>
+    /// <param name="f">Formatter</param>
     /// <returns>Calibration result</returns>
     public CalibrationResult FromFile(string path, ICalibrationResultImportFormatter f) {
       using (System.IO.Stream s = System.IO.File.OpenRead(path)) {
