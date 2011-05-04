@@ -14,13 +14,17 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace Calib3D.IO {
 
   /// <summary>
-  /// Binary calibration result formatter.
+  /// Binary calibration result import/export formatter.
   /// </summary>
-  public class BinaryCalibrationResultExportFormatter : ICalibrationResultExportFormatter {
+  public class BinaryCalibrationResultFormatter : ICalibrationResultExportFormatter, ICalibrationResultImportFormatter {
     System.Runtime.Serialization.IFormatter _formatter = new BinaryFormatter();
 
     public void Serialize(System.IO.Stream s, CalibrationResult cr) {      
       _formatter.Serialize(s, cr);
+    }
+
+    public CalibrationResult Deserialize(System.IO.Stream s) {
+      return _formatter.Deserialize(s) as CalibrationResult;
     }
   }
 }
