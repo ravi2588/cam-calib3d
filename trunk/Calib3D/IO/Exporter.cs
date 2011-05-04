@@ -76,7 +76,7 @@ namespace Calib3D.IO {
     /// <param name="path">Path to export</param>
     /// <param name="cr">Calibration result</param>
     public void ToFile(string path, CalibrationResult cr) {
-      ToFile(path, cr, new BinaryCalibrationResultExportFormatter());
+      ToFile(path, cr, new BinaryCalibrationResultFormatter());
     }
 
     /// <summary>

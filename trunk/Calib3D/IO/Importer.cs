@@ -76,7 +76,7 @@ namespace Calib3D.IO {
     /// <param name="path">Path to import from</param>
     /// <returns>Calibration result</returns>
     public CalibrationResult FromFile(string path) {
-      return FromFile(path, new BinaryCalibrationResultImportFormatter());
+      return FromFile(path, new BinaryCalibrationResultFormatter());
     }
 
     /// <summary>
