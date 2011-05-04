@@ -78,6 +78,7 @@
     <Compile Include="IO\Directory.cs" />
     <Compile Include="IO\ICalibrationResultExporter.cs" />
     <Compile Include="IO\ICalibrationResultImporter.cs" />
+    <Compile Include="IO\OpenCVFileSerializer.cs" />
     <Compile Include="IO\PrettyPrintExtensions.cs" />
     <Compile Include="IO\Images.cs" />
     <Compile Include="IO\TextFileExporter.cs" />
