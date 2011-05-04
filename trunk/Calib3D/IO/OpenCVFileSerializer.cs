@@ -113,14 +113,7 @@ namespace Calib3D.IO {
       /// </summary>
       [StructLayout(LayoutKind.Sequential)]
       public struct CvAttrList {
-        /// <summary>
-        /// NULL-terminated array of (attribute_name,attribute_value) pairs
-        /// </summary>
         public IntPtr attr;
-
-        /// <summary>
-        /// pointer to next chunk of the attributes list 
-        /// </summary>
         public IntPtr next;
       }
 
