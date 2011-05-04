@@ -27,7 +27,7 @@ namespace Calib3D {
     /// <param name="c">Model/image correspondences for multiple views</param>
     /// <param name="image_size">Size of source image</param>
     /// <returns>Calibration result</returns>
-    public static CalibrationResult GetIntrinsics(Correspondences c, System.Drawing.Size image_size) {
+    public static CalibrationResult GetIntrinsics(MultiViewCorrespondences c, System.Drawing.Size image_size) {
       CalibrationResult cr = new CalibrationResult();
       cr.Intrinsics = new Emgu.CV.IntrinsicCameraParameters();
       PerformIntrinsicCalibration(cr, c, image_size, Emgu.CV.CvEnum.CALIB_TYPE.DEFAULT);
@@ -46,7 +46,7 @@ namespace Calib3D {
     /// <param name="intrinsic_guess">Intrinsic parameter guess to use as start solution</param>
     /// <returns>Calibration result</returns>
     public static CalibrationResult GetIntrinsics(
-      Correspondences c, 
+      MultiViewCorrespondences c, 
       System.Drawing.Size image_size, 
       Emgu.CV.Matrix<double> intrinsic_guess) 
     {
@@ -64,7 +64,7 @@ namespace Calib3D {
     /// <param name="intrinsics">Intrinsic camera parameter</param>
     /// <returns>Calibration result</returns>
     public static CalibrationResult GetExtrinsics(
-      Correspondences c,
+      MultiViewCorrespondences c,
       Emgu.CV.IntrinsicCameraParameters intrinsics) 
     {
       if (c.CorrespondenceCount < 4)
@@ -106,7 +106,7 @@ namespace Calib3D {
     public static float GetReprojectionError(
       Emgu.CV.IntrinsicCameraParameters icp,
       Emgu.CV.ExtrinsicCameraParameters[] ecp,
-      Correspondences c) 
+      MultiViewCorrespondences c) 
     {
       double err2 = 0;
 
@@ -139,7 +139,7 @@ namespace Calib3D {
     /// <param name="calib_type">Calibration algorithm type</param>
     protected static void PerformIntrinsicCalibration(
       CalibrationResult cr,
-      Correspondences c,
+      MultiViewCorrespondences c,
       System.Drawing.Size image_size,
       Emgu.CV.CvEnum.CALIB_TYPE calib_type) 
     {

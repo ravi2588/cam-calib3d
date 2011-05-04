@@ -14,18 +14,26 @@ using System.Collections.ObjectModel;
 namespace Calib3D {
 
   /// <summary>
-  /// Dynamic container to hold correspondences between image and model for a single view.
+  /// Collection of model/image correspondences of a single view.
   /// </summary>
-  public class ViewCorrespondences {
+  public class SingleViewCorrespondences {
     private List<System.Drawing.PointF> _image_points;
     private List<Emgu.CV.Structure.MCvPoint3D32f> _model_points;
 
-    public ViewCorrespondences() {
+    /// <summary>
+    /// Construct empty correspondence set.
+    /// </summary>
+    public SingleViewCorrespondences() {
       _image_points = new List<System.Drawing.PointF>();
       _model_points = new List<Emgu.CV.Structure.MCvPoint3D32f>();
     }
 
-    public ViewCorrespondences(
+    /// <summary>
+    /// Construct from parameters.
+    /// </summary>
+    /// <param name="image_points">Image points</param>
+    /// <param name="model_points">Model points</param>
+    public SingleViewCorrespondences(
       IEnumerable<System.Drawing.PointF> image_points,
       IEnumerable<Emgu.CV.Structure.MCvPoint3D32f> model_points) 
     {
@@ -33,44 +41,57 @@ namespace Calib3D {
       _model_points = new List<Emgu.CV.Structure.MCvPoint3D32f>(model_points);
     }
 
+    /// <summary>
+    /// Get the number of correspondences.
+    /// </summary>
     public int Count {
       get { return _image_points.Count; }
     }
 
+    /// <summary>
+    /// Get the collection of image points.
+    /// </summary>
     public List<System.Drawing.PointF> ImagePoints
     {
       get { return _image_points; }
     }
 
+    /// <summary>
+    /// Get the collection of model points.
+    /// </summary>
     public List<Emgu.CV.Structure.MCvPoint3D32f> ModelPoints {
       get { return _model_points; }
     }
 
-    public Correspondences ToCorrespondences() {
-      Correspondences c = new Correspondences();
+    /// <summary>
+    /// Convert to multi view correspondences containing this correspondences.
+    /// </summary>
+    /// <returns></returns>
+    public MultiViewCorrespondences ToMultiViewCorrespondences() {
+      MultiViewCorrespondences c = new MultiViewCorrespondences();
       c.AddView(this);
       return c;
     }
   };
 
   /// <summary>
-  /// Container to track correspondences between image and model over multiple views.
+  /// Collection of model/image correspondences for multiple views.
   /// </summary>
-  public class Correspondences {
-    private List<ViewCorrespondences> _view_corrs;
+  public class MultiViewCorrespondences {
+    private List<SingleViewCorrespondences> _view_corrs;
     
     /// <summary>
     /// Construct empty correspondence set.
     /// </summary>
-    public Correspondences() {
-      _view_corrs = new List<ViewCorrespondences>();
+    public MultiViewCorrespondences() {
+      _view_corrs = new List<SingleViewCorrespondences>();
     }
 
     /// <summary>
     /// Add model/image correspondences of a single view.
     /// </summary>
     /// <param name="vc">Correspondences from view</param>
-    public void AddView(ViewCorrespondences vc) 
+    public void AddView(SingleViewCorrespondences vc) 
     {
       if (vc.ImagePoints.Count != vc.ModelPoints.Count)
         throw new ArgumentException("Number of image points must match number of model points");
@@ -107,7 +128,7 @@ namespace Calib3D {
     }
 
     /// <summary>
-    /// Get corresponding model points as array of array.
+    /// Get corresponding model points converted
     /// </summary>
     public Emgu.CV.Structure.MCvPoint3D32f[][] ModelPoints {
       get { return _view_corrs.ConvertAll<Emgu.CV.Structure.MCvPoint3D32f[]>(v => v.ModelPoints.ToArray()).ToArray(); }
