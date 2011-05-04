@@ -24,7 +24,7 @@ namespace Calib3D {
     /// Besides the intrinsic camera parameters, extrinsic camera parameters are returned
     /// for each view in the correspondence set.
     /// </remarks>
-    /// <param name="c">Model/image correspondences for multiple views</param>
+    /// <param name="c">Model/image correspondences of multiple views</param>
     /// <param name="image_size">Size of source image</param>
     /// <returns>Calibration result</returns>
     public static CalibrationResult GetIntrinsics(MultiViewCorrespondences c, System.Drawing.Size image_size) {
@@ -41,7 +41,7 @@ namespace Calib3D {
     /// Besides the intrinsic camera parameters, extrinsic camera parameters are returned
     /// for each view in the correspondence set.
     /// </remarks>
-    /// <param name="c">Model/image correspondences for multiple views</param>
+    /// <param name="c">Model/image correspondences of multiple views</param>
     /// <param name="image_size">Size of source image</param>
     /// <param name="intrinsic_guess">Intrinsic parameter guess to use as start solution</param>
     /// <returns>Calibration result</returns>
@@ -58,9 +58,9 @@ namespace Calib3D {
     }
 
     /// <summary>
-    /// Calculate intrinsic camera parameters for correspondences in each view.
+    /// Calculate extrinsic camera parameters for correspondences in each view.
     /// </summary>
-    /// <param name="c">Model/image correspondences for multiple views</param>
+    /// <param name="c">Model/image correspondences of multiple views</param>
     /// <param name="intrinsics">Intrinsic camera parameter</param>
     /// <returns>Calibration result</returns>
     public static CalibrationResult GetExtrinsics(
@@ -83,6 +83,19 @@ namespace Calib3D {
       cr.Extrinsics = ecp.ToArray();
       cr.ReprojectionError = GetReprojectionError(intrinsics, cr.Extrinsics, c);
       return cr;
+    }
+
+    /// <summary>
+    /// Calculate extrinsic camera parameters for single view correspondences
+    /// </summary>
+    /// <param name="c">Model/image correspondences of view</param>
+    /// <param name="intrinsics">Intrinsic camera parameter</param>
+    /// <returns>Calibration result</returns>
+    public static CalibrationResult GetExtrinsics(
+      SingleViewCorrespondences c,
+      Emgu.CV.IntrinsicCameraParameters intrinsics) 
+    {
+      return GetExtrinsics(c.ToMultiViewCorrespondences(), intrinsics);
     }
 
     /// <summary>

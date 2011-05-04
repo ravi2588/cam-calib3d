@@ -100,7 +100,7 @@ namespace CommandLineExamples {
 
         // When pattern was detected successfully, try to get extrinsics
         if (dr.Success) {
-          Calib3D.CalibrationResult cr = Calib3D.Calibration.GetExtrinsics(dr.ViewCorrespondences.ToMultiViewCorrespondences(), capture_calib.Intrinsics);
+          Calib3D.CalibrationResult cr = Calib3D.Calibration.GetExtrinsics(dr.ViewCorrespondences, capture_calib.Intrinsics);
           cr.ResultRenderer.Render(i, 0);
           Console.Write(String.Format("\r Error: {0,10:f4}, Distance: {1,10:f2}", cr.ReprojectionError, cr.Extrinsics[0].TranslationVector.Norm));
         }
