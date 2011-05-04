@@ -19,7 +19,7 @@ namespace Calib3D {
     private bool _success;
     private PatternDetector _detector;
     private Pattern _pattern;
-    private List<System.Drawing.PointF> _image_points;
+    private ViewCorrespondences _view_corrs;
     private Renderer.DetectionResultRenderer _renderer;
 
     /// <summary>
@@ -29,7 +29,7 @@ namespace Calib3D {
       _detector = pd;
       _pattern = p;
       _success = true;
-      _image_points = new List<System.Drawing.PointF>();
+      _view_corrs = new ViewCorrespondences();
     }
 
     /// <summary>
@@ -39,27 +39,27 @@ namespace Calib3D {
       _detector = pd;
       _pattern = p;
       _success = success;
-      _image_points = new List<System.Drawing.PointF>();
+      _view_corrs = new ViewCorrespondences();
     }
 
     /// <summary>
     /// Construct from paramters.
     /// </summary>
-    public DetectionResult(PatternDetector pd, Pattern p, IEnumerable<System.Drawing.PointF> points) {
+    public DetectionResult(PatternDetector pd, Pattern p, ViewCorrespondences vc) {
       _detector = pd;
       _pattern = p;
       _success = true;
-      _image_points = new List<System.Drawing.PointF>(points);
+      _view_corrs = vc;
     }
 
     /// <summary>
     /// Construct from paramters.
     /// </summary>
-    public DetectionResult(PatternDetector pd, Pattern p, bool success, IEnumerable<System.Drawing.PointF> points) {
+    public DetectionResult(PatternDetector pd, Pattern p, bool success, ViewCorrespondences vc) {
       _detector = pd;
       _pattern = p;
       _success = success;
-      _image_points = new List<System.Drawing.PointF>(points);
+      _view_corrs = vc;
     }
 
     /// <summary>
@@ -103,18 +103,8 @@ namespace Calib3D {
     /// <summary>
     /// Get the list of corresponding points detected in the image.
     /// </summary>
-    public IList<System.Drawing.PointF> ImagePoints {
-      get { return _image_points; }
-    }
-
-    /// <summary>
-    /// Get correspondences for this detection result.
-    /// </summary>
-    /// <returns>Image/model correspondences.</returns>
-    public Correspondences GetCorrespondences() {
-      Correspondences c = new Correspondences();
-      c.AddView(this);
-      return c;
+    public ViewCorrespondences ViewCorrespondences {
+      get { return _view_corrs; }
     }
   }
 }

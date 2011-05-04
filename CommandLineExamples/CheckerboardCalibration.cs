@@ -92,7 +92,7 @@ namespace CommandLineExamples {
         
         // Detect pattern in image
         Calib3D.DetectionResult dr = detect.FindPattern(i);
-        c.AddView(dr);
+        c.AddView(dr.ViewCorrespondences);
 
         System.Console.WriteLine(dr.Success ? "OK" : "FAILED");
 
