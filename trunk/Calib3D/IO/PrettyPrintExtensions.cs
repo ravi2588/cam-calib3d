@@ -100,13 +100,50 @@ namespace Calib3D.IO.Extensions {
     /// <summary>
     /// Pretty print extrinsic matrix values.
     /// </summary>
-    /// <param name="i"></param>
     /// <returns>Formatting string</returns>
     public static string PrettyPrint(this Emgu.CV.ExtrinsicCameraParameters e) {
       StringBuilder sb = new StringBuilder();
       sb.AppendLine("Extrinsic Matrix");
-      sb.AppendLine(e.ExtrinsicMatrix.PrettyPrint());
+      sb.Append(e.ExtrinsicMatrix.PrettyPrint());
 
+      return sb.ToString();
+    }
+
+    /// <summary>
+    /// Pretty print calibration result.
+    /// </summary>
+    /// <param name="cr">Calibration result</param>
+    /// <returns>Formatting string</returns>
+    public static string PrettyPrint(this CalibrationResult cr) {
+      return PrettyPrint(cr, true, true);
+    }
+
+    /// <summary>
+    /// Pretty print calibration result.
+    /// </summary>
+    /// <param name="cr">Calibration result</param>
+    /// <param name="include_intrinsic">Include intrinsic info in output</param>
+    /// <param name="include_extrinsic">Include extrinsic info in output</param>
+    /// <returns>Formatting string</returns>
+    public static string PrettyPrint(this CalibrationResult cr, bool include_intrinsic, bool include_extrinsic) {
+      StringBuilder sb = new StringBuilder();
+      if (include_intrinsic) {
+        sb.AppendLine("Intrinsic Calibration");
+        sb.AppendLine("=====================");
+        sb.AppendLine(cr.Intrinsics.PrettyPrint());
+      }
+      if (include_extrinsic) {
+        sb.AppendLine();
+        sb.AppendLine("Extrinsic Calibration");
+        sb.AppendLine("=====================");
+        int i = 0;
+        foreach (Emgu.CV.ExtrinsicCameraParameters e in cr.Extrinsics) {
+          sb.AppendLine(string.Format("View {0}", i));
+          sb.AppendLine(e.PrettyPrint());
+          sb.AppendLine("-----------");
+          i += 1;
+        }
+      }
       return sb.ToString();
     }
 
