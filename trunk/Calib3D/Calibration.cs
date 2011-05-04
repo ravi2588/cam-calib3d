@@ -15,7 +15,7 @@ namespace Calib3D {
   /// <summary>
   /// Perform intrinsic/extrinsic camera calibration from point correspondences.
   /// </summary>
-  public static class Calibration {
+  public class Calibration {
 
     /// <summary>
     /// Caluculate instrinsic camera parameters from correspondences.
@@ -28,23 +28,32 @@ namespace Calib3D {
     /// <param name="image_size">Size of source image</param>
     /// <returns>Calibration result</returns>
     public static CalibrationResult GetIntrinsics(Correspondences c, System.Drawing.Size image_size) {
-      if (c.CorrespondenceCount < 4)
-        throw new ArgumentException("At least four correspondences are required");
-
       CalibrationResult cr = new CalibrationResult();
       cr.Intrinsics = new Emgu.CV.IntrinsicCameraParameters();
+      PerformIntrinsicCalibration(cr, c, image_size, Emgu.CV.CvEnum.CALIB_TYPE.DEFAULT);
+      return cr;
+    }
 
-      Emgu.CV.ExtrinsicCameraParameters[] ext;
-
-      double err = Emgu.CV.CameraCalibration.CalibrateCamera(
-        c.ModelPoints, c.ImagePoints, image_size,
-        cr.Intrinsics,
-        Emgu.CV.CvEnum.CALIB_TYPE.DEFAULT,
-        out ext);
-
-      cr.Extrinsics = ext;
-      cr.ReprojectionError = GetReprojectionError(cr.Intrinsics, cr.Extrinsics, c);
-
+    /// <summary>
+    /// Caluculate instrinsic camera parameters from correspondences using a start solution.
+    /// </summary>
+    /// <remarks>
+    /// Besides the intrinsic camera parameters, extrinsic camera parameters are returned
+    /// for each view in the correspondence set.
+    /// </remarks>
+    /// <param name="c">Model/image correspondences for multiple views</param>
+    /// <param name="image_size">Size of source image</param>
+    /// <param name="intrinsic_guess">Intrinsic parameter guess to use as start solution</param>
+    /// <returns>Calibration result</returns>
+    public static CalibrationResult GetIntrinsics(
+      Correspondences c, 
+      System.Drawing.Size image_size, 
+      Emgu.CV.Matrix<double> intrinsic_guess) 
+    {
+      CalibrationResult cr = new CalibrationResult();
+      cr.Intrinsics = new Emgu.CV.IntrinsicCameraParameters();
+      cr.Intrinsics.IntrinsicMatrix = intrinsic_guess;
+      PerformIntrinsicCalibration(cr, c, image_size, Emgu.CV.CvEnum.CALIB_TYPE.CV_CALIB_USE_INTRINSIC_GUESS);
       return cr;
     }
 
@@ -120,6 +129,36 @@ namespace Calib3D {
 
       return (float)Math.Sqrt(err2 / c.CorrespondenceCount);
     }
+
+    /// <summary>
+    /// Perform intrinsic camera estimation using specific calibration type
+    /// </summary>
+    /// <param name="cr">Calibration result containing initial parameters</param>
+    /// <param name="c">Point correspondences</param>
+    /// <param name="image_size">Image size</param>
+    /// <param name="calib_type">Calibration algorithm type</param>
+    protected static void PerformIntrinsicCalibration(
+      CalibrationResult cr,
+      Correspondences c,
+      System.Drawing.Size image_size,
+      Emgu.CV.CvEnum.CALIB_TYPE calib_type) 
+    {
+      if (c.CorrespondenceCount < 4)
+        throw new ArgumentException("At least four correspondences are required");
+
+      Emgu.CV.ExtrinsicCameraParameters[] ext;
+
+      Emgu.CV.CameraCalibration.CalibrateCamera(
+        c.ModelPoints, c.ImagePoints, image_size,
+        cr.Intrinsics,
+        calib_type,
+        out ext);
+
+      cr.Extrinsics = ext;
+      cr.ReprojectionError = GetReprojectionError(cr.Intrinsics, cr.Extrinsics, c);
+    }
+
+
 
   }
 }
