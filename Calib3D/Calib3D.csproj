@@ -73,7 +73,6 @@
     <Compile Include="Addins.cs" />
     <Compile Include="Calibration.cs" />
     <Compile Include="CalibrationResult.cs" />
-    <Compile Include="Correspondences.cs" />
     <Compile Include="DetectionResult.cs" />
     <Compile Include="IO\BinaryCalibrationResultExportFormatter.cs" />
     <Compile Include="IO\BinaryCalibrationResultImportFormatter.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="IO\Importer.cs" />
     <Compile Include="IO\PrettyPrintExtensions.cs" />
     <Compile Include="IO\Images.cs" />
+    <Compile Include="MultiViewCorrespondences.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -90,6 +90,7 @@
     <Compile Include="Renderer\AxisCalibrationResultRenderer.cs" />
     <Compile Include="Renderer\DetectionResultRenderer.cs" />
     <Compile Include="Renderer\NumberDetectionResultRenderer.cs" />
+    <Compile Include="SingleViewCorrespondences.cs" />
     <Compile Include="SupportedPatternAttribute.cs" />
   </ItemGroup>
   <ItemGroup />
