@@ -65,6 +65,7 @@ namespace Calib3D.CheckerBoard {
         _inner_corners_x = value.Width;
         _inner_corners_y = value.Height;
         this.UpdateModelPoints();
+        this.TriggerPropertyChanged("CornerCount");
       }
     }
 
@@ -78,6 +79,7 @@ namespace Calib3D.CheckerBoard {
       set {
         _field_size = value;
         this.UpdateModelPoints();
+        this.TriggerPropertyChanged("SquareLength");
       }
     }
 

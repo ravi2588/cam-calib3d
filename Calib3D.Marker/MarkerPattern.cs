@@ -57,6 +57,7 @@ namespace Calib3D.Marker {
       set { 
         _marker_length = value;
         this.UpdateModelPoints();
+        this.TriggerPropertyChanged("MarkerLength");
       }
     }
 
@@ -66,7 +67,10 @@ namespace Calib3D.Marker {
     [Description("Get/Set the marker image used as pattern")]
     public Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> MarkerImage {
       get { return _marker_image; }
-      set { _marker_image = value; }
+      set { 
+        _marker_image = value;
+        this.TriggerPropertyChanged("MarkerImage");
+      }
     }
 
     /// <summary>
