@@ -71,13 +71,23 @@ namespace Calib3D.IO {
     }
 
     /// <summary>
-    /// Export to file using custom formatter.
+    /// Export to file using default formatter.
     /// </summary>
     /// <param name="path">Path to export</param>
     /// <param name="cr">Calibration result</param>
-    public void ToFile(string path, ICalibrationResultExportFormatter f, CalibrationResult cr) {
+    public void ToFile(string path, CalibrationResult cr) {
+      ToFile(path, cr, new BinaryCalibrationResultExportFormatter());
+    }
+
+    /// <summary>
+    /// Export to file using custom formatter.
+    /// </summary>
+    /// <param name="path">Path to export</param>
+    /// <param name="f">Formatter</param>
+    /// <param name="cr">Calibration result</param>
+    public void ToFile(string path, CalibrationResult cr, ICalibrationResultExportFormatter f) {
       using (System.IO.Stream s = System.IO.File.OpenWrite(path)) {
-        ToStream(s, f, cr);
+        ToStream(s, cr, f);
       }
     }
 
@@ -87,7 +97,7 @@ namespace Calib3D.IO {
     /// <param name="s">Stream</param>
     /// <param name="f">Formatter</param>
     /// <param name="cr">Calibration result</param>
-    public void ToStream(System.IO.Stream s, ICalibrationResultExportFormatter f, CalibrationResult cr) {
+    public void ToStream(System.IO.Stream s, CalibrationResult cr, ICalibrationResultExportFormatter f) {
       if (cr == null)
         throw new ArgumentNullException("Calibration result cannot be null.");
       

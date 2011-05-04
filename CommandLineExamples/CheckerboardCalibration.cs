@@ -111,7 +111,7 @@ namespace CommandLineExamples {
 
       // Export as binary archieve
       Calib3D.IO.Exporter export = new Calib3D.IO.Exporter();
-      export.ToFile(output_path, new Calib3D.IO.BinaryCalibrationResultExportFormatter(), cr);
+      export.ToFile(output_path, cr);
 
       if (verbose) {
         for (int i = 0; i < c.ViewCount; ++i) {
