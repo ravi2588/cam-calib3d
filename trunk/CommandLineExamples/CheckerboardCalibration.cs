@@ -17,7 +17,7 @@ using Calib3D.IO.Extensions;
 namespace CommandLineExamples {
 
   /// <summary>
-  /// Simple Chessboard calibration
+  /// Camera calibration from stored images containing the checkerboard pattern.
   /// </summary>
   /// <example>
   /// CommandLineExamples.exe run CheckerboardCalibration /ImageDirectory=../etc/images/checkerboard ^ 
