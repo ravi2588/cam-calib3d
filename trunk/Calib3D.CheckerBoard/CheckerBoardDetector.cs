@@ -47,7 +47,7 @@ namespace Calib3D.CheckerBoard {
           new System.Drawing.Size(-1, -1),
           new Emgu.CV.Structure.MCvTermCriteria(0.001));
 
-        Calib3D.ViewCorrespondences vc = new ViewCorrespondences(image_points, my_p.ModelPoints);
+        Calib3D.SingleViewCorrespondences vc = new SingleViewCorrespondences(image_points, my_p.ModelPoints);
 
         return new Calib3D.DetectionResult(this, my_p, true, vc);
       } else {

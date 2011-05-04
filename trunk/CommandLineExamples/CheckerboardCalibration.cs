@@ -81,7 +81,7 @@ namespace CommandLineExamples {
 
       // Load all images and collect model/image correspondences.
       System.Drawing.Size image_size = System.Drawing.Size.Empty;
-      Calib3D.Correspondences c = new Calib3D.Correspondences();
+      Calib3D.MultiViewCorrespondences c = new Calib3D.MultiViewCorrespondences();
 
       List<Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte>> images = new List<Emgu.CV.Image<Emgu.CV.Structure.Bgr,byte>>();
       foreach (string path in Calib3D.IO.Directory.GetFiles(image_dir, "*.png;*.jpg")) {

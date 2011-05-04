@@ -19,7 +19,7 @@ namespace Calib3D {
     private bool _success;
     private PatternDetector _detector;
     private Pattern _pattern;
-    private ViewCorrespondences _view_corrs;
+    private SingleViewCorrespondences _view_corrs;
     private Renderer.DetectionResultRenderer _renderer;
 
     /// <summary>
@@ -29,7 +29,7 @@ namespace Calib3D {
       _detector = pd;
       _pattern = p;
       _success = true;
-      _view_corrs = new ViewCorrespondences();
+      _view_corrs = new SingleViewCorrespondences();
     }
 
     /// <summary>
@@ -39,13 +39,13 @@ namespace Calib3D {
       _detector = pd;
       _pattern = p;
       _success = success;
-      _view_corrs = new ViewCorrespondences();
+      _view_corrs = new SingleViewCorrespondences();
     }
 
     /// <summary>
     /// Construct from paramters.
     /// </summary>
-    public DetectionResult(PatternDetector pd, Pattern p, ViewCorrespondences vc) {
+    public DetectionResult(PatternDetector pd, Pattern p, SingleViewCorrespondences vc) {
       _detector = pd;
       _pattern = p;
       _success = true;
@@ -55,7 +55,7 @@ namespace Calib3D {
     /// <summary>
     /// Construct from paramters.
     /// </summary>
-    public DetectionResult(PatternDetector pd, Pattern p, bool success, ViewCorrespondences vc) {
+    public DetectionResult(PatternDetector pd, Pattern p, bool success, SingleViewCorrespondences vc) {
       _detector = pd;
       _pattern = p;
       _success = success;
@@ -103,7 +103,7 @@ namespace Calib3D {
     /// <summary>
     /// Get the list of corresponding points detected in the image.
     /// </summary>
-    public ViewCorrespondences ViewCorrespondences {
+    public SingleViewCorrespondences ViewCorrespondences {
       get { return _view_corrs; }
     }
   }
