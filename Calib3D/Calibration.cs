@@ -32,7 +32,6 @@ namespace Calib3D {
         throw new ArgumentException("At least four correspondences are required");
 
       CalibrationResult cr = new CalibrationResult();
-      cr.Correspondences = c;
       cr.Intrinsics = new Emgu.CV.IntrinsicCameraParameters();
 
       Emgu.CV.ExtrinsicCameraParameters[] ext;
@@ -44,7 +43,7 @@ namespace Calib3D {
         out ext);
 
       cr.Extrinsics = ext;
-      cr.ReprojectionError = GetReprojectionError(cr);
+      cr.ReprojectionError = GetReprojectionError(cr.Intrinsics, cr.Extrinsics, c);
 
       return cr;
     }
@@ -63,7 +62,6 @@ namespace Calib3D {
         throw new ArgumentException("At least four correspondences are required");
 
       CalibrationResult cr = new CalibrationResult();
-      cr.Correspondences = c;
       cr.Intrinsics = intrinsics;
 
       List<Emgu.CV.ExtrinsicCameraParameters> ecp = new List<Emgu.CV.ExtrinsicCameraParameters>();
@@ -74,7 +72,7 @@ namespace Calib3D {
             intrinsics));
       }
       cr.Extrinsics = ecp.ToArray();
-      cr.ReprojectionError = GetReprojectionError(cr);
+      cr.ReprojectionError = GetReprojectionError(intrinsics, cr.Extrinsics, c);
       return cr;
     }
 
@@ -92,29 +90,35 @@ namespace Calib3D {
     /// Matches current OpenCV implementation. We roll out our own implementation, since
     /// OpenCV supports the reprojection error only for intrinsic camera calibration.
     /// </remarks>
-    /// <param name="cr">Calibration result having correspondences, intrinsics and extrinsics</param>
+    /// <param name="icp">Intrinsic camera parameters</param>
+    /// <param name="ecp">Extrinsic camera parameters for each view</param>
+    /// <param name="c">Point correspondences between model and image</param>
     /// <returns>The RMS projection error in pixels</returns>
-    public static float GetReprojectionError(CalibrationResult cr) {
+    public static float GetReprojectionError(
+      Emgu.CV.IntrinsicCameraParameters icp,
+      Emgu.CV.ExtrinsicCameraParameters[] ecp,
+      Correspondences c) 
+    {
       double err2 = 0;
 
       // For each view
-      for (int i = 0; i < cr.Correspondences.ViewCount; ++i) {
+      for (int i = 0; i < c.ViewCount; ++i) {
         // Reproject all model points (i.e. back project)
         System.Drawing.PointF[] projected = Emgu.CV.CameraCalibration.ProjectPoints(
-          cr.Correspondences.ModelPoints[i],
-          cr.Extrinsics[i],
-          cr.Intrinsics);
+          c.ModelPoints[i],
+          ecp[i],
+          icp);
         
         // Calculate the squared L2 error between each back-projection and 
         // associated image point
         for (int j = 0; j < projected.Length; ++j) {
-          double dx = projected[j].X - cr.Correspondences.ImagePoints[i][j].X;
-          double dy = projected[j].Y - cr.Correspondences.ImagePoints[i][j].Y;
+          double dx = projected[j].X - c.ImagePoints[i][j].X;
+          double dy = projected[j].Y - c.ImagePoints[i][j].Y;
           err2 += dx * dx + dy * dy;
         }
       }
 
-      return (float)Math.Sqrt(err2 / cr.Correspondences.CorrespondenceCount);
+      return (float)Math.Sqrt(err2 / c.CorrespondenceCount);
     }
 
   }

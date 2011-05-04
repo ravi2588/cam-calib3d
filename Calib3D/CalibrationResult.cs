@@ -23,8 +23,6 @@ namespace Calib3D {
     private Emgu.CV.ExtrinsicCameraParameters[] _extrinsics;
     private float _error;
     [NonSerialized] 
-    private Correspondences _correspondences;
-    [NonSerialized] 
     private Renderer.CalibrationResultRenderer _renderer;
 
     /// <summary>
@@ -63,14 +61,6 @@ namespace Calib3D {
     public Emgu.CV.ExtrinsicCameraParameters[] Extrinsics {
       get { return _extrinsics; }
       set { _extrinsics = value; }
-    }
-
-    /// <summary>
-    /// Get/Set the correspondences associated with this result.
-    /// </summary>
-    public Correspondences Correspondences {
-      get { return _correspondences; }
-      set { _correspondences = value; }
     }
 
     /// <summary>
