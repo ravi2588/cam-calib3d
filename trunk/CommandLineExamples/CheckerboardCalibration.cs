@@ -109,7 +109,7 @@ namespace CommandLineExamples {
       System.Console.WriteLine(String.Format("Reprojection Error {0} pixels.", cr.ReprojectionError));
       System.Console.WriteLine(cr.Intrinsics.PrettyPrint());
 
-      // Export as binary archieve
+      // Export as binary archive
       Calib3D.IO.BinaryFileSerializer export = new Calib3D.IO.BinaryFileSerializer();
       export.FileName = output_path;
       export.Export(cr);

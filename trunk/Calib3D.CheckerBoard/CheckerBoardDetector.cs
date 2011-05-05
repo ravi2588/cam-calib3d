@@ -31,16 +31,17 @@ namespace Calib3D.CheckerBoard {
       Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> my_img = i.Convert<Emgu.CV.Structure.Gray, Byte>();
       my_img._EqualizeHist();
 
-      bool found = Emgu.CV.CameraCalibration.FindChessboardCorners(
+      image_points = Emgu.CV.CameraCalibration.FindChessboardCorners(
         my_img,
         my_p.CornerCount,
         Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH |
         Emgu.CV.CvEnum.CALIB_CB_TYPE.FILTER_QUADS |
-        Emgu.CV.CvEnum.CALIB_CB_TYPE.NORMALIZE_IMAGE,
-        out image_points
+        Emgu.CV.CvEnum.CALIB_CB_TYPE.NORMALIZE_IMAGE
       );
 
-      if (found) {
+      int ncorners = my_p.CornerCount.Width * my_p.CornerCount.Height;
+
+      if (image_points != null && image_points.Length == ncorners) {
         my_img.FindCornerSubPix(
           new System.Drawing.PointF[][] { image_points },
           new System.Drawing.Size(5, 5),
