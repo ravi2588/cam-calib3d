@@ -137,8 +137,11 @@ namespace Calib3D.IO {
     }
 
     /// <summary>
-    /// Provides extended OpenCV interop currently missing by Emgu.
+    /// Provides extended OpenCV interop currently missing in Emgu.
     /// </summary>
+    /// <remarks>This support will break once we switch to newer
+    /// OpenCV version or support 64bit. The class is supposed to
+    /// be made obsolete once Emgu support is in place.</remarks>
     private static class ExtendedInterop {
       const string CxCoreDll = "cxcore110.dll";
 
