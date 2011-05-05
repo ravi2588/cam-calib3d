@@ -15,12 +15,12 @@ namespace Calib3D.IO {
   /// <remarks>XML and YAML is supported.</remarks>
   /// <remarks>Only matrix compatible types are serialized. Hence, the reprojection error
   /// information is lost.</remarks>
-  public class OpenCVFileSerializer : ICalibrationResultExporter, ICalibrationResultImporter {
+  public class FileStorageSerializer : ICalibrationResultExporter, ICalibrationResultImporter {
 
     /// <summary>
     /// Create a new instance of the OpenCVFileSerializer class.
     /// </summary>
-    public OpenCVFileSerializer() {
+    public FileStorageSerializer() {
       FileName = "calibration_result.xml";
     }
 
@@ -29,6 +29,10 @@ namespace Calib3D.IO {
     /// </summary>
     public string FileName { get; set; }
 
+    /// <summary>
+    /// Export calibration result
+    /// </summary>
+    /// <param name="cr">Calibration result</param>
     public void Export(CalibrationResult cr) {
       IntPtr fs = IntPtr.Zero;
       try {
@@ -49,6 +53,10 @@ namespace Calib3D.IO {
       }
     }
 
+    /// <summary>
+    /// Import calibration result
+    /// </summary>
+    /// <returns>Calibration result</returns>
     public CalibrationResult Import() {
       IntPtr fs = IntPtr.Zero;
       CalibrationResult cr = null;
@@ -59,8 +67,7 @@ namespace Calib3D.IO {
         cr.Intrinsics = new Emgu.CV.IntrinsicCameraParameters();
         cr.Intrinsics.IntrinsicMatrix = ReadMatrix(fs, "intrinsic");
         cr.Intrinsics.DistortionCoeffs = ReadMatrix(fs, "distortion");
-        //cr.ReprojectionError = (float)ExtendedInterop.cvReadRealByName(fs, IntPtr.Zero, "error", float.MaxValue);
-        
+        cr.ReprojectionError = (float)ExtendedInterop.cvReadRealByName(fs, IntPtr.Zero, "error");
 
         int i = 0;
         List<Emgu.CV.ExtrinsicCameraParameters> ecps = new List<Emgu.CV.ExtrinsicCameraParameters>();
@@ -107,28 +114,41 @@ namespace Calib3D.IO {
     /// <summary>
     /// Provides extended OpenCV interop currently missing by Emgu.
     /// </summary>
-    class ExtendedInterop {
-      /// <summary>
-      /// List of attributes
-      /// </summary>
+    private static class ExtendedInterop {
+      const string CxCoreDll = "cxcore110.dll";
+
       [StructLayout(LayoutKind.Sequential)]
       public struct CvAttrList {
         public IntPtr attr;
         public IntPtr next;
       }
 
-      [DllImport("opencv_core220.dll", EntryPoint = "cvWrite", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+      [StructLayout(LayoutKind.Explicit)]
+      public struct CvFileNode {
+        [FieldOffset(0)]
+        int tag;
+        [FieldOffset(4)]
+        IntPtr info;
+        [FieldOffset(8)]
+        public double f;
+        [FieldOffset(8)]
+        public int i;
+      }
+
+      [DllImport(CxCoreDll, EntryPoint = "cvWrite", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
       public static extern void cvWrite(IntPtr fs, [MarshalAs(UnmanagedType.LPStr)] string name, IntPtr ptr, CvAttrList attributes);
 
-      [DllImport("opencv_core220.dll", EntryPoint = "cvSave", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-      public static extern void cvSave([MarshalAs(UnmanagedType.LPStr)] string filename, IntPtr struct_ptr, [MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string comment, CvAttrList attributes);
-
-      [DllImport("opencv_core220.dll", EntryPoint = "cvWriteReal", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+      [DllImport(CxCoreDll, EntryPoint = "cvWriteReal", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
       public static extern void cvWriteReal(IntPtr fs, [MarshalAs(UnmanagedType.LPStr)] string name, double value);
 
-      [DllImport("opencv_core220.dll", EntryPoint = "cvReadRealByName", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-      public static extern double cvReadRealByName(IntPtr fs, IntPtr map, [MarshalAs(UnmanagedType.LPStr)] string name, double default_value);
+      [DllImport(CxCoreDll, EntryPoint = "cvGetFileNodeByName", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+      public static extern IntPtr cvGetFileNodeByName(IntPtr fs, IntPtr map, [MarshalAs(UnmanagedType.LPStr)] string name);
 
+      public static double cvReadRealByName(IntPtr fs, IntPtr map, string name) {
+        IntPtr n = cvGetFileNodeByName(fs, map, name);
+        CvFileNode fn = (CvFileNode)Marshal.PtrToStructure(n, typeof(CvFileNode));
+        return fn.f;
+      }
     };
 
    
