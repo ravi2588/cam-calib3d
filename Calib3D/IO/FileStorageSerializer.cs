@@ -9,12 +9,17 @@ using Calib3D.IO.Extensions;
 namespace Calib3D.IO {
 
   /// <summary>
-  /// Serialize calibration result to multiple files allowing other OpenCV programs to
-  /// use it. 
+  /// Provides serialization support using OpenCVs FileStorage.
   /// </summary>
-  /// <remarks>XML and YAML is supported.</remarks>
-  /// <remarks>Only matrix compatible types are serialized. Hence, the reprojection error
-  /// information is lost.</remarks>
+  /// <remarks>This class enables third-party programs that utilize OpenCV to read Calib3D results.</remarks>
+  /// <remarks>
+  /// An calibration result is converted to a FileStorage output in the following manner: First the intrinsic matrix 
+  /// (size: 3x3, name: 'intrinsic', type: 'opencv-matrix') is written, followed by the distortion coefficients 
+  /// matrix (size: Nx1, name: 'distortion', type: 'opencv-matrix'). Next, the error information is
+  /// written (name: 'error', type: 'real'). Finally, each extrinsic matrix (size: 3x3, name: 'extrinsic_{id}', type: 'opencv-matrix')
+  /// is written to the file. Intrinsic and extrinsic information can be skipped from the serialization process
+  /// using properties of this class.
+  /// </remarks>
   public class FileStorageSerializer : ICalibrationResultExporter, ICalibrationResultImporter {
 
     /// <summary>
@@ -22,7 +27,19 @@ namespace Calib3D.IO {
     /// </summary>
     public FileStorageSerializer() {
       FileName = "calibration_result.xml";
+      SerializeIntrinsics = true;
+      SerializeExtrinsics = true;
     }
+
+    /// <summary>
+    /// Get/Set a boolean value indicating whether to serialize intrinsic info or not.
+    /// </summary>
+    public bool SerializeIntrinsics { get; set; }
+
+    /// <summary>
+    /// Get/Set a boolean value indicating whether to serialize extrinsic info or not.
+    /// </summary>
+    public bool SerializeExtrinsics { get; set; }
 
     /// <summary>
     /// Get/Set filename associated with the intrinsic camera matrix.
@@ -38,15 +55,19 @@ namespace Calib3D.IO {
       try {
         fs = Emgu.CV.CvInvoke.cvOpenFileStorage(FileName, IntPtr.Zero, Emgu.CV.CvEnum.STORAGE_OP.WRITE);
 
-        // Intrinsics
-        ExtendedInterop.cvWrite(fs, "intrinsic", cr.Intrinsics.IntrinsicMatrix.Ptr, new ExtendedInterop.CvAttrList());
-        ExtendedInterop.cvWrite(fs, "distortion", cr.Intrinsics.DistortionCoeffs.Ptr, new ExtendedInterop.CvAttrList());
-        ExtendedInterop.cvWriteReal(fs, "error", cr.ReprojectionError);
+        if (SerializeIntrinsics) {
+          // Intrinsics
+          ExtendedInterop.cvWrite(fs, "intrinsic", cr.Intrinsics.IntrinsicMatrix.Ptr, new ExtendedInterop.CvAttrList());
+          ExtendedInterop.cvWrite(fs, "distortion", cr.Intrinsics.DistortionCoeffs.Ptr, new ExtendedInterop.CvAttrList());
+        }
 
-        // Extrinsics
-        for (int i = 0; i < cr.Extrinsics.Length; ++i) {
-          string node_name = string.Format("extrinsic_{0}", i);
-          ExtendedInterop.cvWrite(fs, node_name, cr.Extrinsics[i].ExtrinsicMatrix.Ptr, new ExtendedInterop.CvAttrList());
+        if (SerializeExtrinsics) {
+          ExtendedInterop.cvWriteReal(fs, "error", cr.ReprojectionError);
+          // Extrinsics
+          for (int i = 0; i < cr.Extrinsics.Length; ++i) {
+            string node_name = string.Format("extrinsic_{0}", i);
+            ExtendedInterop.cvWrite(fs, node_name, cr.Extrinsics[i].ExtrinsicMatrix.Ptr, new ExtendedInterop.CvAttrList());
+          }
         }
       } finally {
         Emgu.CV.CvInvoke.cvReleaseFileStorage(ref fs);
@@ -64,26 +85,30 @@ namespace Calib3D.IO {
         fs = Emgu.CV.CvInvoke.cvOpenFileStorage(FileName, IntPtr.Zero, Emgu.CV.CvEnum.STORAGE_OP.READ);
         cr = new CalibrationResult();
 
-        cr.Intrinsics = new Emgu.CV.IntrinsicCameraParameters();
-        cr.Intrinsics.IntrinsicMatrix = ReadMatrix(fs, "intrinsic");
-        cr.Intrinsics.DistortionCoeffs = ReadMatrix(fs, "distortion");
-        cr.ReprojectionError = (float)ExtendedInterop.cvReadRealByName(fs, IntPtr.Zero, "error");
-
-        int i = 0;
-        List<Emgu.CV.ExtrinsicCameraParameters> ecps = new List<Emgu.CV.ExtrinsicCameraParameters>();
-        Emgu.CV.Matrix<double> ext = null;
-        while ((ext = ReadMatrix(fs, string.Format("extrinsic_{0}", i))) != null) {
-          Emgu.CV.Matrix<double> rot = ext.GetSubRect(new System.Drawing.Rectangle(0,0,3,3));
-          Emgu.CV.Matrix<double> t = ext.GetCol(3);
-
-          Emgu.CV.RotationVector3D rot_v = new Emgu.CV.RotationVector3D();
-          Emgu.CV.CvInvoke.cvRodrigues2(rot.Ptr, rot_v.Ptr, IntPtr.Zero); 
-          Emgu.CV.ExtrinsicCameraParameters ecp = new Emgu.CV.ExtrinsicCameraParameters(rot_v, t);
-          ecps.Add(ecp);
-          i += 1;
+        if (SerializeIntrinsics) {
+          cr.Intrinsics = new Emgu.CV.IntrinsicCameraParameters();
+          cr.Intrinsics.IntrinsicMatrix = ReadMatrix(fs, "intrinsic");
+          cr.Intrinsics.DistortionCoeffs = ReadMatrix(fs, "distortion");
         }
-        cr.Extrinsics = ecps.ToArray();
 
+        if (SerializeExtrinsics) {
+          cr.ReprojectionError = (float)ExtendedInterop.cvReadRealByName(fs, IntPtr.Zero, "error");
+
+          int i = 0;
+          List<Emgu.CV.ExtrinsicCameraParameters> ecps = new List<Emgu.CV.ExtrinsicCameraParameters>();
+          Emgu.CV.Matrix<double> ext = null;
+          while ((ext = ReadMatrix(fs, string.Format("extrinsic_{0}", i))) != null) {
+            Emgu.CV.Matrix<double> rot = ext.GetSubRect(new System.Drawing.Rectangle(0, 0, 3, 3));
+            Emgu.CV.Matrix<double> t = ext.GetCol(3);
+
+            Emgu.CV.RotationVector3D rot_v = new Emgu.CV.RotationVector3D();
+            Emgu.CV.CvInvoke.cvRodrigues2(rot.Ptr, rot_v.Ptr, IntPtr.Zero);
+            Emgu.CV.ExtrinsicCameraParameters ecp = new Emgu.CV.ExtrinsicCameraParameters(rot_v, t);
+            ecps.Add(ecp);
+            i += 1;
+          }
+          cr.Extrinsics = ecps.ToArray();
+        }
       } finally {
         Emgu.CV.CvInvoke.cvReleaseFileStorage(ref fs);
       }

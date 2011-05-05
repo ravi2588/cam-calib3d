@@ -136,6 +136,7 @@ namespace Calib3D.IO.Extensions {
         sb.AppendLine();
         sb.AppendLine("Extrinsic Calibration");
         sb.AppendLine("=====================");
+        sb.AppendFormat("Reprojection Error: {0}", cr.ReprojectionError);
         int i = 0;
         foreach (Emgu.CV.ExtrinsicCameraParameters e in cr.Extrinsics) {
           sb.AppendLine(string.Format("View {0}", i));

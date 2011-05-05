@@ -74,11 +74,13 @@
     <Compile Include="Calibration.cs" />
     <Compile Include="CalibrationResult.cs" />
     <Compile Include="DetectionResult.cs" />
-    <Compile Include="IO\BinaryFileSerializer.cs" />
+    <Compile Include="IO\BinaryFileSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IO\Directory.cs" />
+    <Compile Include="IO\FileStorageSerializer.cs" />
     <Compile Include="IO\ICalibrationResultExporter.cs" />
     <Compile Include="IO\ICalibrationResultImporter.cs" />
-    <Compile Include="IO\OpenCVFileSerializer.cs" />
     <Compile Include="IO\PrettyPrintExtensions.cs" />
     <Compile Include="IO\Images.cs" />
     <Compile Include="IO\TextFileExporter.cs" />
