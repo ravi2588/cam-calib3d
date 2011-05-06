@@ -19,8 +19,7 @@ namespace Calib3D {
   /// </summary>
   [InheritedExport]
   public class Pattern : INotifyPropertyChanged {
-    private List<Emgu.CV.Structure.MCvPoint3D32f> _model_points;
-    
+
     /// <summary>
     /// Property change notifications
     /// </summary>
@@ -29,16 +28,7 @@ namespace Calib3D {
     /// <summary>
     /// Create empty pattern.
     /// </summary>
-    public Pattern() {
-      _model_points = new List<Emgu.CV.Structure.MCvPoint3D32f>();
-    }
-
-    /// <summary>
-    /// Get the list of 3d model points.
-    /// </summary>
-    public IList<Emgu.CV.Structure.MCvPoint3D32f> ModelPoints {
-      get { return _model_points; }
-    }
+    public Pattern() { }
 
     /// <summary>
     /// Triggers the property changed event
@@ -47,7 +37,7 @@ namespace Calib3D {
     protected void TriggerPropertyChanged(string property_name) {
       if (PropertyChanged != null) {
         PropertyChanged(this, new PropertyChangedEventArgs(property_name));
-        }
+      }
     }
 
   }
