@@ -81,6 +81,7 @@
     <Compile Include="IO\FileStorageSerializer.cs" />
     <Compile Include="IO\ICalibrationResultExporter.cs" />
     <Compile Include="IO\ICalibrationResultImporter.cs" />
+    <Compile Include="IO\ImageExtensions.cs" />
     <Compile Include="IO\PrettyPrintExtensions.cs" />
     <Compile Include="IO\Images.cs" />
     <Compile Include="IO\TextFileExporter.cs" />
