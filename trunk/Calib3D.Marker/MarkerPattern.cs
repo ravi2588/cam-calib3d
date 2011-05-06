@@ -39,6 +39,7 @@ namespace Calib3D.Marker {
   public class MarkerPattern : Calib3D.Pattern {
     private float _marker_length;
     private Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> _marker_image;
+    private List<Emgu.CV.Structure.MCvPoint3D32f> _model_points;
 
     /// <summary>
     /// Default construct pattern.
@@ -46,6 +47,7 @@ namespace Calib3D.Marker {
     public MarkerPattern() {
       _marker_length = 10;
       _marker_image = null;
+      _model_points = new List<Emgu.CV.Structure.MCvPoint3D32f>();
     }
 
     /// <summary>
@@ -71,6 +73,13 @@ namespace Calib3D.Marker {
         _marker_image = value;
         this.TriggerPropertyChanged("MarkerImage");
       }
+    }
+
+    /// <summary>
+    /// Get the list of 3d model points.
+    /// </summary>
+    public IList<Emgu.CV.Structure.MCvPoint3D32f> ModelPoints {
+      get { return _model_points; }
     }
 
     /// <summary>

@@ -34,6 +34,7 @@ namespace Calib3D.CheckerBoard {
     private int _inner_corners_x;
     private int _inner_corners_y;
     private float _field_size;
+    private List<Emgu.CV.Structure.MCvPoint3D32f> _model_points;
 
     /// <summary>
     /// Default construct.
@@ -51,6 +52,7 @@ namespace Calib3D.CheckerBoard {
       _inner_corners_x = inner_corners_x;
       _inner_corners_y = inner_corners_y;
       _field_size = field_size;
+      _model_points = new List<Emgu.CV.Structure.MCvPoint3D32f>();
       this.UpdateModelPoints();
     }
 
@@ -81,6 +83,13 @@ namespace Calib3D.CheckerBoard {
         this.UpdateModelPoints();
         this.TriggerPropertyChanged("SquareLength");
       }
+    }
+
+    /// <summary>
+    /// Get the list of 3d model points.
+    /// </summary>
+    public IList<Emgu.CV.Structure.MCvPoint3D32f> ModelPoints {
+      get { return _model_points; }
     }
 
     /// <summary>
