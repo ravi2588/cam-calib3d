@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Calib3D.IO.Extensions;
 
 namespace Calib3D.Feature {
 
@@ -135,8 +136,8 @@ namespace Calib3D.Feature {
         this.DescriptorSize == EDescriptorSize.Basic64 ? false : true);
 
       Emgu.CV.Image<Emgu.CV.Structure.Gray, byte> g = pat.Image.Convert<Emgu.CV.Structure.Gray, byte>();
-      Emgu.CV.Features2D.ImageFeature[] modelFeatures = _feature_provider.DetectFeatures(g, null);
-      _tracker = new Emgu.CV.Features2D.Features2DTracker(modelFeatures);
+      Emgu.CV.Features2D.ImageFeature[] model_features = _feature_provider.DetectFeatures(g, null);
+      _tracker = new Emgu.CV.Features2D.Features2DTracker(model_features);
 
       _scalings = new System.Drawing.SizeF(pat.Size.Width / pat.Image.Width, pat.Size.Height / pat.Image.Height);
     }

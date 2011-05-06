@@ -53,7 +53,7 @@ namespace Calib3D.IO {
     /// </summary>
     /// <param name="i">Image to show</param>
     /// <param name="wait_time_ms">Wait time in milliseconds. Use zero or negativ delay to wait forever.</param>
-    public static void Show(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, int wait_time_ms)
+    public static void Show<T>(Emgu.CV.Image<T, byte> i, int wait_time_ms) where T : struct, Emgu.CV.IColor
     {
       Show(i, wait_time_ms, "image");
     }
@@ -64,7 +64,7 @@ namespace Calib3D.IO {
     /// <param name="i">Image to show</param>
     /// <param name="wait_time_ms">Wait time in milliseconds. Use zero or negativ delay to wait forever.</param>
     /// <param name="window_name">Window title</param>
-    public static void Show(Emgu.CV.Image<Emgu.CV.Structure.Bgr, byte> i, int wait_time_ms, string window_name)
+    public static void Show<T>(Emgu.CV.Image<T, byte> i, int wait_time_ms, string window_name) where T : struct, Emgu.CV.IColor
     {
       Emgu.CV.CvInvoke.cvNamedWindow(window_name);
       Emgu.CV.CvInvoke.cvShowImage(window_name, i.Ptr);
