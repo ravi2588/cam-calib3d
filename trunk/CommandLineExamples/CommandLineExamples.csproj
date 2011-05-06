@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="CheckerboardCalibration.cs" />
     <Compile Include="CameraSnapshot.cs" />
+    <Compile Include="LiveFeatureDetection.cs" />
     <Compile Include="Default.cs" />
     <Compile Include="LiveMarkerTracking.cs" />
     <Compile Include="LiveMarkerDetection.cs" />
@@ -70,6 +71,11 @@
     <ProjectReference Include="..\Calib3D.CheckerBoard\Calib3D.CheckerBoard.csproj">
       <Project>{3B597D69-E20F-4799-AA3E-DAB2DBFC9D09}</Project>
       <Name>Calib3D.CheckerBoard</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Calib3D.Feature\Calib3D.Feature.csproj">
+      <Project>{F93B21B5-6E13-4455-97F9-3F7FC31FCC36}</Project>
+      <Name>Calib3D.Feature</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Calib3D.Marker\Calib3D.Marker.csproj">
