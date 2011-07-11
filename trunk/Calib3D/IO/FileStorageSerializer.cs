@@ -143,7 +143,7 @@ namespace Calib3D.IO {
     /// OpenCV version or support 64bit. The class is supposed to
     /// be made obsolete once Emgu support is in place.</remarks>
     private static class ExtendedInterop {
-      const string CxCoreDll = "opencv_core229.dll";
+      const string CxCoreDll = "opencv_core230.dll";
 
       [StructLayout(LayoutKind.Sequential)]
       public struct CvAttrList {
