@@ -62,6 +62,7 @@
     <Compile Include="CameraSnapshot.cs" />
     <Compile Include="LiveFeatureDetection.cs" />
     <Compile Include="Default.cs" />
+    <Compile Include="LiveFeatureTracking.cs" />
     <Compile Include="LiveMarkerTracking.cs" />
     <Compile Include="LiveMarkerDetection.cs" />
     <Compile Include="Program.cs" />
